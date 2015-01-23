@@ -1,6 +1,9 @@
 # GGJ-2015-Lodz
 Game created during Global Game Jam 2015.
 
+Elevator pitch:
+Did you know that every third man swallows a spider during sleep? How many of them get outside?
+
 Milestone #1
 - 8 statycznych nóg
 - ruszanie ze skalowaniem nóg (touch gesture)
