@@ -9,12 +9,12 @@ Did you know that every third man swallows a spider during sleep? How many of th
 - [x] ruszanie ze skalowaniem nóg (touch gesture)
 - [x] zaczepianie nóg na ścianie
 
-Milestone #2
+~~Milestone #2~~
 - [x] ruszanie tłowiem (punktem zaczepiania)
-- [ ] ześlizgujące się nogi
-- [ ] śmierć pająka na kontakt z kwasem
+- [x] ześlizgujące się nogi
+- [x] śmierć pająka na kontakt z kwasem
 
 Milestone #3
-- [ ] spadające przeszkody z góry
-- [ ] zmienny kształt ściany?
+- [x] spadające przeszkody z góry
+- [ ] osobno grafika ściany, tło i kwas
 - [ ] podnoszenie się kwasu
