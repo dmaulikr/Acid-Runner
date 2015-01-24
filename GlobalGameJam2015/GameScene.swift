@@ -16,6 +16,15 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     var leftWall: SKSpriteNode?
     var rightWall: SKSpriteNode?
+    var background: SKSpriteNode?
+    
+    var lightNode: SKLightNode?
+    
+    let baseColor: SKColor = SKColorWithRGB(170, 57, 57)
+    let secondaryColor: SKColor = SKColorWithRGB(128, 21, 21)
+    
+    let mainLightningBitMask: UInt32 = 1
+    
     
     override func didMoveToView(view: SKView) {
         nodes = []
@@ -46,6 +55,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         
         createLeftWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
         createRightWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
+        createBackground(view, wallWidth: wallWidth, wallHeight: wallHeight)
+        
+        letThereBeLight(view)
     }
     
     func createLegs(start: CGPoint) {
@@ -59,34 +71,52 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         leg.setupHandle()
         leg.moveEnd(end)
         leg.moveToPoint(start)
-        
-        
+        leg.lightingBitMask = mainLightningBitMask
         nodes?.append(leg)
         
         return leg
     }
     
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.position = CGPoint(x: CGRectGetWidth(wallNode.frame)/2, y: CGRectGetHeight(view.frame)/2)
+        wallNode.lightingBitMask = mainLightningBitMask
         addChild(wallNode)
         leftWall = wallNode
     }
     
     func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: CGRectGetWidth(view.frame) - CGRectGetWidth(view.frame), y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - CGRectGetWidth(wallNode.frame)/2, y: CGRectGetHeight(view.frame)/2)
+        wallNode.lightingBitMask = mainLightningBitMask
         addChild(wallNode)
         rightWall = wallNode
     }
     
+
     func createBody() {
         body = SKSpriteNode(texture: SKTexture(imageNamed: "korpusik"))
         body?.size = CGSizeMake(80, 80)
         body?.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         addChild(body!)
+    }
+    func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
+        var backgroundNode = SKSpriteNode(color: baseColor, size: CGSizeMake(CGRectGetWidth(view.frame)-wallWidth*2, CGRectGetHeight(view.frame)))
+        backgroundNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
+        backgroundNode.lightingBitMask = mainLightningBitMask
+        addChild(backgroundNode)
+        background = backgroundNode
+    }
+    
+    func letThereBeLight(view: SKView) {
+        var light = SKLightNode()
+        light.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame) + 50.0)
+        light.categoryBitMask = mainLightningBitMask
+        light.ambientColor = secondaryColor
+        addChild(light)
+        lightNode = light
     }
     
     func hadle(sender: UIPanGestureRecognizer) {
