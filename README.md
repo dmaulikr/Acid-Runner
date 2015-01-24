@@ -19,9 +19,15 @@ Milestone #3
 - [ ] osobno grafika ściany, tło i kwas
 - [ ] podnoszenie się kwasu
 
+Milestone #4
+- [ ] dźwięki! :notes::dog::clap::two_hearts:
+
 Reczy do zrobienia/naprawienia:
 - [ ] złe układanie nóg przy ciągnięciu tłowia
 - [ ] blokowanie poruszania tłowia po animacji sprężynki
 - [ ] przesuwanie planszy w górę
 - [ ] grubsze nogi pająka
+- [ ] kolizje ze ścianami (?)
+- [ ] oświetlenie & cienie (zPosition & bitmasks)
+- [ ] rozmyty cień, cień na ścianie (pierdoły)
 - [ ] 8 nóg pająka
