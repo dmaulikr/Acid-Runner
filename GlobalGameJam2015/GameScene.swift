@@ -8,6 +8,19 @@
 
 import SpriteKit
 
+struct PhysicsCategory {
+    static let None     : UInt32 = 0
+    static let All      : UInt32 = UInt32.max
+    static let Spider   : UInt32 = 0b1
+    static let Acid     : UInt32 = 0b10
+}
+
+struct LightingCategory {
+    static let None             : UInt32 = 0
+    static let All              : UInt32 = UInt32.max
+    static let MainLightSource  : UInt32 = 0b1
+}
+
 class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
     var nodes: [Leg] = []
     var selected: Leg?
@@ -27,8 +40,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     let baseColor: SKColor = SKColorWithRGB(170, 57, 57)
     let secondaryColor: SKColor = SKColorWithRGB(128, 21, 21)
     let shadowColor: SKColor = SKColorWithRGBA(0, 0, 0, 60)
-    
-    let mainLightningBitMask: UInt32 = 1
     
     var correctingBody = true
     
@@ -50,7 +61,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         rightLegs = []
         createSceneContents(view)
         createSpiderLegs()
-        createBody()
+        createSpiderBody()
         recon = true
         let recognizer = UIPanGestureRecognizer(target: self, action:Selector("hadle:"))
         view.addGestureRecognizer(recognizer)
@@ -135,7 +146,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         leg.setupHandle()
         leg.moveEnd(end)
         leg.moveToPoint(start)
-        leg.lightingBitMask = mainLightningBitMask
+        leg.lightingBitMask = LightingCategory.MainLightSource
         nodes.append(leg)
         
         return leg
@@ -146,7 +157,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         wallNode.zPosition = 1
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.position = CGPoint(x: CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
-        wallNode.lightingBitMask = mainLightningBitMask
+        wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
         leftWall = wallNode
     }
@@ -156,13 +167,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         wallNode.zPosition = 1
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: CGRectGetWidth(view.frame) - CGRectGetWidth(view.frame), y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
-        wallNode.lightingBitMask = mainLightningBitMask
+        wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
         rightWall = wallNode
     }
     
 
-    func createBody() {
+    func createSpiderBody() {
         body = SKSpriteNode(texture: SKTexture(imageNamed: "korpusik"))
         body?.size = CGSizeMake(60, 60)
         body?.zPosition = 1
@@ -170,7 +181,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         body?.physicsBody = SKPhysicsBody(circleOfRadius: 30)
         body?.physicsBody?.affectedByGravity = false
         body?.physicsBody?.categoryBitMask = 0x1 << 0
-        body?.shadowCastBitMask = mainLightningBitMask
+        body?.shadowCastBitMask = LightingCategory.MainLightSource
         let wait = SKAction.waitForDuration(2)
         let frames = [SKTexture(imageNamed: "korpusik_mrugniety"), SKTexture(imageNamed: "korpusik")]
         let blink = SKAction.animateWithTextures(frames, timePerFrame: 0.1)
@@ -181,7 +192,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var backgroundNode = SKSpriteNode(color: baseColor, size: CGSizeMake(CGRectGetWidth(view.frame)-wallWidth*2, CGRectGetHeight(view.frame)))
         backgroundNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
-        backgroundNode.lightingBitMask = mainLightningBitMask
+        backgroundNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(backgroundNode)
         background = backgroundNode
     }
@@ -190,7 +201,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         var light = SKLightNode()
         let lightNodeOffset = CGFloat(100.0)
         light.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame) + lightNodeOffset)
-        light.categoryBitMask = mainLightningBitMask
+        light.categoryBitMask = LightingCategory.MainLightSource
         light.ambientColor = secondaryColor
         light.shadowColor = shadowColor
         light.falloff = 2
