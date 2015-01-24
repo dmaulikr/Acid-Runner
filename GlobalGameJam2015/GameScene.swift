@@ -11,7 +11,11 @@ import SpriteKit
 class GameScene: SKScene {
     var legs: [SKSpriteNode]?
     
+    var leftWall: SKSpriteNode?
+    var rightWall: SKSpriteNode?
+    
     override func didMoveToView(view: SKView) {
+        createSceneContents(view)
         createSpiderLegs()
     }
     
@@ -21,7 +25,14 @@ class GameScene: SKScene {
             createLegs(CGPointMake(0, self.size.height * CGFloat(val)))
             createLegs(CGPointMake(self.size.width, self.size.height * CGFloat(val)))
         }
+    }
+    
+    func createSceneContents(view: SKView) {
+        let wallWidth = CGFloat(35)
+        let wallHeight = view.frame.height
         
+        createLeftWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
+        createRightWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
     }
     
     func createLegs(start: CGPoint) {
@@ -43,5 +54,21 @@ class GameScene: SKScene {
     
     func vectorFromPoints(point1: CGPoint, point2: CGPoint) -> CGVector {
         return CGVectorMake(point2.x - point1.x, point2.y - point1.y);
+    }
+
+    func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
+        var wallNode = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
+        wallNode.position = CGPoint(x: CGRectGetWidth(wallNode.frame)/2, y: CGRectGetHeight(view.frame)/2)
+        addChild(wallNode)
+        leftWall = wallNode
+    }
+    
+    func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
+        var wallNode = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: CGRectGetWidth(view.frame) - CGRectGetWidth(view.frame), y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
+        wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - CGRectGetWidth(wallNode.frame)/2, y: CGRectGetHeight(view.frame)/2)
+        addChild(wallNode)
+        rightWall = wallNode
     }
 }
