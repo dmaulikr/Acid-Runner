@@ -117,6 +117,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         body?.zPosition = 1
         body?.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         body?.shadowCastBitMask = mainLightningBitMask
+        let wait = SKAction.waitForDuration(2)
+        let frames = [SKTexture(imageNamed: "korpusik_mrugniety"), SKTexture(imageNamed: "korpusik")]
+        let blink = SKAction.animateWithTextures(frames, timePerFrame: 0.1)
+        body?.runAction(SKAction.repeatActionForever(SKAction.sequence([wait, blink])), withKey: "blink")
         addChild(body!)
     }
 
