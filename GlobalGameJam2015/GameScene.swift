@@ -9,7 +9,8 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    var nodes: [SKSpriteNode]?
+    var nodes: [Leg]?
+    var selected: Leg?
     
     var leftWall: SKSpriteNode?
     var rightWall: SKSpriteNode?
@@ -29,7 +30,7 @@ class GameScene: SKScene {
         createSpiderLegs()
         
         
-        let recognizer = UITapGestureRecognizer(target: self, action:Selector("hadle:"))
+        let recognizer = UIPanGestureRecognizer(target: self, action:Selector("hadle:"))
         view.addGestureRecognizer(recognizer)
     }
     
@@ -59,26 +60,16 @@ class GameScene: SKScene {
     }
 
     func createLegAtPoints(start: CGPoint, end: CGPoint) -> SKSpriteNode {
-        let vector = vectorFromPoints(start, point2: end)
-        let size = CGSizeMake(vector.length(), 10)
-        let leg = SKSpriteNode(color: UIColor.blackColor(), size: size)
-        leg.anchorPoint = CGPointMake(1, 0.5)
-        leg.position = end
-        leg.zRotation = vector.angle
-        
-        let handle = SKSpriteNode(color: UIColor.blueColor(), size: CGSizeMake(40, 40))
-        handle.position = CGPointMake(-leg.size.width, 0)
-        handle.lightingBitMask = mainLightningBitMask
-        leg.addChild(handle)
-        nodes?.append(handle)
+        let leg = Leg(color: UIColor.blackColor(), size: CGSizeZero)
+        leg.end = end
+        leg.setupHandle()
+        leg.moveToPoint(start)
+        leg.lightingBitMask = mainLightningBitMask
+        nodes?.append(leg)
         
         return leg
     }
     
-    func vectorFromPoints(point1: CGPoint, point2: CGPoint) -> CGVector {
-        return CGVectorMake(point2.x - point1.x, point2.y - point1.y);
-    }
-
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
@@ -114,13 +105,35 @@ class GameScene: SKScene {
         lightNode = light
     }
     
-    func hadle(sender: UITapGestureRecognizer) {
+    func hadle(sender: UIPanGestureRecognizer) {
         let location = sender.locationInView(sender.view)
         let location2 = self.convertPointToView(location)
+        
+        switch sender.state {
+            case .Changed:
+                selected?.moveToPoint(location2)
+            case .Ended:
+                selected = nil
+                selected?.handle?.color = UIColor.blueColor()
+            default:
+                break
+        }
+
+        
         for test in nodesAtPoint(location2) {
             let handle = test as SKSpriteNode
-            if contains(nodes!, handle) {
-                handle.color = UIColor.yellowColor()
+            
+            for leg in nodes! {
+                if leg.handle! === handle {
+                    switch sender.state {
+                        case .Began:
+                            selected = leg
+                            handle.color = UIColor.yellowColor()
+                        default:
+                        break
+                    }
+                    break
+                }
             }
         }
     }
