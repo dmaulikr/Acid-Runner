@@ -34,6 +34,15 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         let background = SKSpriteNode(texture: SKTexture(imageNamed: "tlo"), size: self.size)
         background.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         addChild(background)
+        
+        let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
+        acid.position = CGPointMake(self.size.width / 2, -200)
+        acid.zPosition = 1
+//        let shader = SKShader(fileNamed: "shader.fsh")
+//        shader.uniforms = [UniformGenerator.uniformForSize(acid.size)]
+//        acid.shader = shader
+        addChild(acid)
+        
         nodes = []
         leftLegs = []
         rightLegs = []
