@@ -9,10 +9,12 @@
 import SpriteKit
 
 struct PhysicsCategory {
-    static let None     : UInt32 = 0
-    static let All      : UInt32 = UInt32.max
-    static let Spider   : UInt32 = 0b1
-    static let Acid     : UInt32 = 0b10
+    static let None         : UInt32 = 0
+    static let All          : UInt32 = UInt32.max
+    static let Spider       : UInt32 = 0b1
+    static let Acid         : UInt32 = 0b10
+    static let Wall         : UInt32 = 0b100
+    static let DroppedItem  : UInt32 = 0b1000
 }
 
 struct LightingCategory {
@@ -50,10 +52,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
         acid.position = CGPointMake(self.size.width / 2, -200)
-        acid.zPosition = 1
+        acid.zPosition = 1.0
         acid.physicsBody = SKPhysicsBody(rectangleOfSize: acid.size)
         acid.physicsBody?.dynamic = false
-        acid.physicsBody?.contactTestBitMask = 0x1 << 0
+        acid.physicsBody?.categoryBitMask = PhysicsCategory.Acid
+        acid.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
         addChild(acid)
         
         nodes = []
@@ -80,7 +83,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         let label = SKLabelNode(text: "Game over!")
         label.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         label.fontSize = 60
-        label.zPosition = 2
+        label.zPosition = 2.0
         addChild(label)
     }
 
@@ -109,8 +112,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
         ball.physicsBody?.allowsRotation = false
-        ball.physicsBody?.collisionBitMask = 1
-        ball.physicsBody?.contactTestBitMask = 1
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider
+        ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem
+        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
     }
     
     func createSpiderLegs() {
@@ -142,7 +146,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
 
     func createLegAtPoints(start: CGPoint, end: CGPoint) -> Leg {
         let leg = Leg(texture: SKTexture(imageNamed: "noga"))
-        leg.zPosition = 1
+        leg.zPosition = 1.0
         leg.setupHandle()
         leg.moveEnd(end)
         leg.moveToPoint(start)
@@ -154,8 +158,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
-        wallNode.zPosition = 1
+        wallNode.zPosition = 1.0
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
+        wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
         wallNode.position = CGPoint(x: CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
         wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
@@ -164,23 +169,23 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
-        wallNode.zPosition = 1
+        wallNode.zPosition = 1.0
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: CGRectGetWidth(view.frame) - CGRectGetWidth(view.frame), y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
+        wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
         wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
         wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
         rightWall = wallNode
     }
     
-
     func createSpiderBody() {
         body = SKSpriteNode(texture: SKTexture(imageNamed: "korpusik"))
         body?.size = CGSizeMake(60, 60)
-        body?.zPosition = 1
+        body?.zPosition = 1.0
         body?.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         body?.physicsBody = SKPhysicsBody(circleOfRadius: 30)
         body?.physicsBody?.affectedByGravity = false
-        body?.physicsBody?.categoryBitMask = 0x1 << 0
+        body?.physicsBody?.categoryBitMask = PhysicsCategory.Spider
         body?.shadowCastBitMask = LightingCategory.MainLightSource
         let wait = SKAction.waitForDuration(2)
         let frames = [SKTexture(imageNamed: "korpusik_mrugniety"), SKTexture(imageNamed: "korpusik")]
