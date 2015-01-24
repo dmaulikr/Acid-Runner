@@ -9,7 +9,7 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    var nodes: [SKSpriteNode]?
+    var nodes: [Leg]?
     
     var leftWall: SKSpriteNode?
     var rightWall: SKSpriteNode?
@@ -47,25 +47,16 @@ class GameScene: SKScene {
     }
 
     func createLegAtPoints(start: CGPoint, end: CGPoint) -> SKSpriteNode {
-        let vector = vectorFromPoints(start, point2: end)
-        let size = CGSizeMake(vector.length(), 10)
-        let leg = SKSpriteNode(color: UIColor.blackColor(), size: size)
-        leg.anchorPoint = CGPointMake(1, 0.5)
-        leg.position = end
-        leg.zRotation = vector.angle
+        let leg = Leg(color: UIColor.blackColor(), size: CGSizeZero)
+        leg.end = end
+        leg.setupHandle()
+        leg.moveToPoint(start)
         
-        let handle = SKSpriteNode(color: UIColor.blueColor(), size: CGSizeMake(40, 40))
-        handle.position = CGPointMake(-leg.size.width, 0)
-        leg.addChild(handle)
-        nodes?.append(handle)
+        nodes?.append(leg)
         
         return leg
     }
     
-    func vectorFromPoints(point1: CGPoint, point2: CGPoint) -> CGVector {
-        return CGVectorMake(point2.x - point1.x, point2.y - point1.y);
-    }
-
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: wallWidth, height: wallHeight))
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
@@ -87,8 +78,13 @@ class GameScene: SKScene {
         let location2 = self.convertPointToView(location)
         for test in nodesAtPoint(location2) {
             let handle = test as SKSpriteNode
-            if contains(nodes!, handle) {
-                handle.color = UIColor.yellowColor()
+            
+            for leg in nodes! {
+                if leg.handle! === handle {
+                    handle.color = UIColor.yellowColor()
+                    leg.moveToPoint(CGPointZero)
+                    leg.updateHandle()
+                }
             }
         }
     }

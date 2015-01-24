@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB6298C71A739DAD00C39464 /* Leg.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C61A739DAD00C39464 /* Leg.swift */; };
 		BBA58B141A72FC6200A4F184 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B081A72FC6200A4F184 /* CGFloat+Extensions.swift */; };
 		BBA58B151A72FC6200A4F184 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B091A72FC6200A4F184 /* CGPoint+Extensions.swift */; };
 		BBA58B161A72FC6200A4F184 /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B0A1A72FC6200A4F184 /* CGVector+Extensions.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB6298C61A739DAD00C39464 /* Leg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Leg.swift; sourceTree = "<group>"; };
 		BBA58B081A72FC6200A4F184 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		BBA58B091A72FC6200A4F184 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		BBA58B0A1A72FC6200A4F184 /* CGVector+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGVector+Extensions.swift"; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				BBD894FF1A72AE7C003FF4C0 /* AppDelegate.swift */,
 				BBD895011A72AE7C003FF4C0 /* GameScene.sks */,
 				BBD895031A72AE7C003FF4C0 /* GameScene.swift */,
+				BB6298C61A739DAD00C39464 /* Leg.swift */,
 				BBD895051A72AE7C003FF4C0 /* GameViewController.swift */,
 				BBD895071A72AE7C003FF4C0 /* Main.storyboard */,
 				BBD8950A1A72AE7C003FF4C0 /* Images.xcassets */,
@@ -275,6 +278,7 @@
 				BBA58B171A72FC6200A4F184 /* Int+Extensions.swift in Sources */,
 				BBA58B1B1A72FC6200A4F184 /* SKNode+Extensions.swift in Sources */,
 				BBA58B1C1A72FC6200A4F184 /* SKTAudio.swift in Sources */,
+				BB6298C71A739DAD00C39464 /* Leg.swift in Sources */,
 				BBA58B141A72FC6200A4F184 /* CGFloat+Extensions.swift in Sources */,
 				BBA58B1F1A72FC6200A4F184 /* Vector3.swift in Sources */,
 				BBD895001A72AE7C003FF4C0 /* AppDelegate.swift in Sources */,
