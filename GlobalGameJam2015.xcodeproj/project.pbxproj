@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BB6298C71A739DAD00C39464 /* Leg.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C61A739DAD00C39464 /* Leg.swift */; };
+		BB6298C91A73B17300C39464 /* SpriteKit+Spring.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */; };
 		BBA58B141A72FC6200A4F184 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B081A72FC6200A4F184 /* CGFloat+Extensions.swift */; };
 		BBA58B151A72FC6200A4F184 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B091A72FC6200A4F184 /* CGPoint+Extensions.swift */; };
 		BBA58B161A72FC6200A4F184 /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B0A1A72FC6200A4F184 /* CGVector+Extensions.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		BB6298C61A739DAD00C39464 /* Leg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Leg.swift; sourceTree = "<group>"; };
+		BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpriteKit+Spring.swift"; sourceTree = "<group>"; };
 		BBA58B081A72FC6200A4F184 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		BBA58B091A72FC6200A4F184 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		BBA58B0A1A72FC6200A4F184 /* CGVector+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGVector+Extensions.swift"; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				BBD895071A72AE7C003FF4C0 /* Main.storyboard */,
 				BBD8950A1A72AE7C003FF4C0 /* Images.xcassets */,
 				BBD8950C1A72AE7C003FF4C0 /* LaunchScreen.xib */,
+				BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */,
 				BBA58B071A72FC6200A4F184 /* SKTUtils */,
 				BBD894FD1A72AE7C003FF4C0 /* Supporting Files */,
 			);
@@ -266,6 +269,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6298C91A73B17300C39464 /* SpriteKit+Spring.swift in Sources */,
 				BBD895041A72AE7C003FF4C0 /* GameScene.swift in Sources */,
 				BBA58B151A72FC6200A4F184 /* CGPoint+Extensions.swift in Sources */,
 				BBA58B1E1A72FC6200A4F184 /* SKTTimingFunctions.swift in Sources */,

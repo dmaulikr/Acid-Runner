@@ -11,8 +11,11 @@ import SpriteKit
 class Leg: SKSpriteNode {
     var handle: SKSpriteNode?
     var end: CGPoint?
+    var point: CGPoint?
     
     func setupHandle() {
+        point = CGPointZero
+        end = CGPointZero
         anchorPoint = CGPointMake(1, 0.5)
         
         handle = SKSpriteNode(color: UIColor.blueColor(), size: CGSizeMake(40, 40))
@@ -25,12 +28,29 @@ class Leg: SKSpriteNode {
     }
     
     func moveToPoint(start: CGPoint) {
-        let vector = vectorFromPoints(start, point2: end!)
+        var pos = start
+        let vec = vectorFromPoints(start, point2: end!);
+        if vec.length() > 200 {
+            let vec2  = vec.normalized() * -200.0
+            pos = end!.offset(dx: vec2.dx, dy: vec2.dy)
+        }
+        
+        self.point = pos
+        updatePos()
+        updateHandle()
+    }
+    
+    func moveEnd(end: CGPoint) {
+        self.end = end
+        updatePos()
+        updateHandle()
+    }
+    
+    func updatePos() {
+        let vector = vectorFromPoints(point!, point2: end!)
         size = CGSizeMake(vector.length(), 10)
         position = end!
         zRotation = vector.angle
-        
-        updateHandle()
     }
     
     func vectorFromPoints(point1: CGPoint, point2: CGPoint) -> CGVector {
