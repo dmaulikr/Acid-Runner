@@ -48,7 +48,7 @@ class GameScene: SKScene {
     }
 
     func createLegAtPoints(start: CGPoint, end: CGPoint) -> SKSpriteNode {
-        let leg = Leg(color: UIColor.blackColor(), size: CGSizeZero)
+        let leg = Leg(texture: SKTexture(imageNamed: "noga"))
         leg.end = end
         leg.setupHandle()
         leg.moveToPoint(start)
