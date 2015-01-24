@@ -29,11 +29,11 @@ class Leg: SKSpriteNode {
     
     func moveToPoint(start: CGPoint) {
         var pos = start
-        let vec = vectorFromPoints(start, point2: end!);
-        if vec.length() > 200 {
-            let vec2  = vec.normalized() * -200.0
-            pos = end!.offset(dx: vec2.dx, dy: vec2.dy)
-        }
+//        let vec = vectorFromPoints(start, point2: end!);
+//        if vec.length() > 200 {
+//            let vec2  = vec.normalized() * -200.0
+//            pos = end!.offset(dx: vec2.dx, dy: vec2.dy)
+//        }
         
         self.point = pos
         updatePos()

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB0FCB201A742B7400712BDF /* Spider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0FCB1F1A742B7400712BDF /* Spider.swift */; };
 		BB6298C71A739DAD00C39464 /* Leg.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C61A739DAD00C39464 /* Leg.swift */; };
 		BB6298C91A73B17300C39464 /* SpriteKit+Spring.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */; };
 		BB73F5121A740545007453BC /* shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BB73F5111A740545007453BC /* shader.fsh */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB0FCB1F1A742B7400712BDF /* Spider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spider.swift; sourceTree = "<group>"; };
 		BB6298C61A739DAD00C39464 /* Leg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Leg.swift; sourceTree = "<group>"; };
 		BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpriteKit+Spring.swift"; sourceTree = "<group>"; };
 		BB73F5111A740545007453BC /* shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.fsh; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				BBD895031A72AE7C003FF4C0 /* GameScene.swift */,
 				BB6298C61A739DAD00C39464 /* Leg.swift */,
 				BBD895051A72AE7C003FF4C0 /* GameViewController.swift */,
+				BB0FCB1F1A742B7400712BDF /* Spider.swift */,
 				BBD895071A72AE7C003FF4C0 /* Main.storyboard */,
 				BBD8950A1A72AE7C003FF4C0 /* Images.xcassets */,
 				BBD8950C1A72AE7C003FF4C0 /* LaunchScreen.xib */,
@@ -282,6 +285,7 @@
 			files = (
 				BB6298C91A73B17300C39464 /* SpriteKit+Spring.swift in Sources */,
 				BBD895041A72AE7C003FF4C0 /* GameScene.swift in Sources */,
+				BB0FCB201A742B7400712BDF /* Spider.swift in Sources */,
 				BBA58B151A72FC6200A4F184 /* CGPoint+Extensions.swift in Sources */,
 				BBA58B1E1A72FC6200A4F184 /* SKTTimingFunctions.swift in Sources */,
 				BBA58B1D1A72FC6200A4F184 /* SKTEffects.swift in Sources */,
