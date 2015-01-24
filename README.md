@@ -18,3 +18,10 @@ Milestone #3
 - [x] spadające przeszkody z góry
 - [ ] osobno grafika ściany, tło i kwas
 - [ ] podnoszenie się kwasu
+
+Reczy do zrobienia/naprawienia:
+- [ ] złe układanie nóg przy ciągnięciu tłowia
+- [ ] blokowanie poruszania tłowia po animacji sprężynki
+- [ ] przesuwanie planszy w górę
+- [ ] grubsze nogi pająka
+- [ ] 8 nóg pająka
