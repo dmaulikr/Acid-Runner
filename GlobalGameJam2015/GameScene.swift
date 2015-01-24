@@ -72,7 +72,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         leg.moveEnd(end)
         leg.moveToPoint(start)
         leg.lightingBitMask = mainLightningBitMask
-        leg.shadowCastBitMask = mainLightningBitMask
         nodes?.append(leg)
         
         return leg
@@ -101,8 +100,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         body = SKSpriteNode(texture: SKTexture(imageNamed: "korpusik"))
         body?.size = CGSizeMake(80, 80)
         body?.position = CGPointMake(self.size.width / 2, self.size.height / 2)
+        body?.shadowCastBitMask = mainLightningBitMask
         addChild(body!)
     }
+
     func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var backgroundNode = SKSpriteNode(color: baseColor, size: CGSizeMake(CGRectGetWidth(view.frame)-wallWidth*2, CGRectGetHeight(view.frame)))
         backgroundNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
