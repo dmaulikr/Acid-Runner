@@ -9,7 +9,7 @@
 import SpriteKit
 
 class GameScene: SKScene, UIGestureRecognizerDelegate {
-    var nodes: [Leg]?
+    var nodes: [Leg] = []
     var selected: Leg?
     var body: SKSpriteNode?
     var recon: Bool?
@@ -28,7 +28,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     let mainLightningBitMask: UInt32 = 1
     
+    var correctingBody = true
+    
     override func didMoveToView(view: SKView) {
+        let background = SKSpriteNode(texture: SKTexture(imageNamed: "tlo"), size: self.size)
+        background.position = CGPointMake(self.size.width / 2, self.size.height / 2)
+        addChild(background)
         nodes = []
         leftLegs = []
         rightLegs = []
@@ -48,8 +53,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     func createSpiderLegs() {
         let div = [1.0/3.0, 1.0/2.0, 2.0/3.0]
         for val in div {
-            let left = createLegs(CGPointMake(30, self.size.height * CGFloat(val)))
-            let right = createLegs(CGPointMake(self.size.width-30, self.size.height * CGFloat(val)))
+            let left = createLegs(CGPointMake(35, self.size.height * CGFloat(val)))
+            let right = createLegs(CGPointMake(self.size.width-35, self.size.height * CGFloat(val)))
             leftLegs?.append(left)
             rightLegs?.append(right)
         }
@@ -75,17 +80,19 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
 
     func createLegAtPoints(start: CGPoint, end: CGPoint) -> Leg {
         let leg = Leg(texture: SKTexture(imageNamed: "noga"))
+        leg.zPosition = 1
         leg.setupHandle()
         leg.moveEnd(end)
         leg.moveToPoint(start)
         leg.lightingBitMask = mainLightningBitMask
-        nodes?.append(leg)
+        nodes.append(leg)
         
         return leg
     }
     
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.zPosition = 1
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.position = CGPoint(x: CGRectGetWidth(wallNode.frame)/2, y: CGRectGetHeight(view.frame)/2)
         wallNode.lightingBitMask = mainLightningBitMask
@@ -95,6 +102,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.zPosition = 1
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: CGRectGetWidth(view.frame) - CGRectGetWidth(view.frame), y: 0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - CGRectGetWidth(wallNode.frame)/2, y: CGRectGetHeight(view.frame)/2)
         wallNode.lightingBitMask = mainLightningBitMask
@@ -105,7 +113,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
 
     func createBody() {
         body = SKSpriteNode(texture: SKTexture(imageNamed: "korpusik"))
-        body?.size = CGSizeMake(80, 80)
+        body?.size = CGSizeMake(60, 60)
+        body?.zPosition = 1
         body?.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         body?.shadowCastBitMask = mainLightningBitMask
         addChild(body!)
@@ -138,7 +147,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         for test in nodesAtPoint(location2) {
             let handle = test as SKSpriteNode
             
-            for leg in nodes! {
+            for leg in nodes {
                 if leg.handle! === handle {
                     switch sender.state {
                         case .Began:
@@ -167,9 +176,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         case .Ended:
             if let sel = selected {
                 if contains(leftLegs!, sel) {
-                    sel.moveToPoint(CGPointMake(30, selected!.point!.y))
+                    sel.moveToPoint(CGPointMake(35, selected!.point!.y))
                 } else {
-                    sel.moveToPoint(CGPointMake(self.size.width - 30, selected!.point!.y))
+                    sel.moveToPoint(CGPointMake(self.size.width - 35, selected!.point!.y))
                 }
             }
             
@@ -209,12 +218,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
             if body! === test {
                 switch sender.state {
                     case .Began:
+                        correctingBody = false
                         body?.removeActionForKey("bounce")
                     case .Changed:
                         body?.position = location2
                     case .Ended:
+                        correctingBody = false;
                         let move = SKAction.moveTo(correctBodyPosition(), duration: 1, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0)
-                        body?.runAction(move, withKey: "bouce")
+                        body?.runAction(move, completion: { () -> Void in
+                            self.correctingBody = true
+                        })
+                    
                     
                 default:
                     break
@@ -223,11 +237,32 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         }
     }
     
+    var lastUpdate: NSTimeInterval = 0
+    var sumForSlide: NSTimeInterval = 0
+    
     override func update(currentTime: NSTimeInterval) {
-        for leg in nodes! {
+        let delta = currentTime - lastUpdate
+        
+        sumForSlide += delta
+        
+        if sumForSlide > 0.06 {
+            sumForSlide = 0
+            
+            for leg in nodes {
+                leg.moveToPoint(CGPointMake(leg.point!.x, leg.point!.y - 1))
+            }
+            if correctingBody {
+                body?.removeActionForKey("bounce")
+                body?.position = correctBodyPosition()
+            }
+        }
+        
+        for leg in nodes {
             let pos = self.body?.position
             leg.moveEnd(pos!)
         }
+        
+        lastUpdate = currentTime
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {

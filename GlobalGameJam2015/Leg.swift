@@ -18,7 +18,7 @@ class Leg: SKSpriteNode {
         end = CGPointZero
         anchorPoint = CGPointMake(1, 0.5)
         
-        handle = SKSpriteNode(color: UIColor.blueColor(), size: CGSizeMake(40, 40))
+        handle = SKSpriteNode(color: UIColor.blueColor(), size: CGSizeMake(50, 50))
         updateHandle()
         addChild(handle!)
     }
