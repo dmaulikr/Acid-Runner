@@ -50,21 +50,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         background.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         addChild(background)
         
-        let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
-        acid.position = CGPointMake(self.size.width / 2, -200)
-        acid.zPosition = 1.0
-        acid.physicsBody = SKPhysicsBody(rectangleOfSize: acid.size)
-        acid.physicsBody?.dynamic = false
-        acid.physicsBody?.categoryBitMask = PhysicsCategory.Acid
-        acid.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
-        addChild(acid)
-        
         nodes = []
         leftLegs = []
         rightLegs = []
+        
         createSceneContents(view)
         createSpiderLegs()
         createSpiderBody()
+        
         recon = true
         let recognizer = UIPanGestureRecognizer(target: self, action:Selector("hadle:"))
         view.addGestureRecognizer(recognizer)
@@ -124,6 +117,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         runAction(SKAction.repeatActionForever(sequence))
     }
     
+    func createAcid(view: SKView) {
+        let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
+        acid.position = CGPointMake(self.size.width / 2, -200)
+        acid.zPosition = 1.0
+        acid.physicsBody = SKPhysicsBody(rectangleOfSize: acid.size)
+        acid.physicsBody?.dynamic = false
+        acid.physicsBody?.categoryBitMask = PhysicsCategory.Acid
+        acid.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
+        addChild(acid)
+    }
+    
     func createBalls(view: SKView) {
         let offsetFromWalls = CGFloat(10)
         let ballsDropPointOffset = CGFloat(50)
@@ -153,6 +157,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createSceneContents(view: SKView) {
         let wallHeight = view.frame.height
+        
+        createAcid(view)
         
         createLeftWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
         createRightWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
