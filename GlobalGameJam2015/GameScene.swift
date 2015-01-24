@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene, UIGestureRecognizerDelegate {
+class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
     var nodes: [Leg] = []
     var selected: Leg?
     var body: SKSpriteNode?
@@ -38,9 +38,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
         acid.position = CGPointMake(self.size.width / 2, -200)
         acid.zPosition = 1
-//        let shader = SKShader(fileNamed: "shader.fsh")
-//        shader.uniforms = [UniformGenerator.uniformForSize(acid.size)]
-//        acid.shader = shader
+        acid.physicsBody = SKPhysicsBody(rectangleOfSize: acid.size)
+        acid.physicsBody?.dynamic = false
+        acid.physicsBody?.contactTestBitMask = 0x1 << 0
         addChild(acid)
         
         nodes = []
@@ -57,6 +57,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         let recognizer2 = UIPanGestureRecognizer(target: self, action:Selector("hadle2:"))
         view.addGestureRecognizer(recognizer2)
         recognizer2.delegate = self
+        
+        self.physicsWorld.contactDelegate = self
+    }
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        self.view?.paused = true
+        let label = SKLabelNode(text: "Game over!")
+        label.position = CGPointMake(self.size.width / 2, self.size.height / 2)
+        label.fontSize = 60
+        label.zPosition = 2
+        addChild(label)
     }
     
     func createSpiderLegs() {
@@ -125,6 +136,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         body?.size = CGSizeMake(60, 60)
         body?.zPosition = 1
         body?.position = CGPointMake(self.size.width / 2, self.size.height / 2)
+        body?.physicsBody = SKPhysicsBody(circleOfRadius: 30)
+        body?.physicsBody?.affectedByGravity = false
+        body?.physicsBody?.categoryBitMask = 0x1 << 0
         body?.shadowCastBitMask = mainLightningBitMask
         let wait = SKAction.waitForDuration(2)
         let frames = [SKTexture(imageNamed: "korpusik_mrugniety"), SKTexture(imageNamed: "korpusik")]
