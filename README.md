@@ -28,6 +28,7 @@ Milestone #5
 
 Milestone #6
 - [ ] dźwięki! :notes::dog::clap::two_hearts:
+- [ ] muzyka w tle :notes:
 
 Reczy do zrobienia/naprawienia:
 - [ ] złe układanie nóg przy ciągnięciu tłowia
