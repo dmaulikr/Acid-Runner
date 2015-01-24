@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     var nodes: [Leg]?
+    var selected: Leg?
     
     var leftWall: SKSpriteNode?
     var rightWall: SKSpriteNode?
@@ -20,7 +21,7 @@ class GameScene: SKScene {
         createSpiderLegs()
         
         
-        let recognizer = UITapGestureRecognizer(target: self, action:Selector("hadle:"))
+        let recognizer = UIPanGestureRecognizer(target: self, action:Selector("hadle:"))
         view.addGestureRecognizer(recognizer)
     }
     
@@ -73,17 +74,34 @@ class GameScene: SKScene {
         rightWall = wallNode
     }
     
-    func hadle(sender: UITapGestureRecognizer) {
+    func hadle(sender: UIPanGestureRecognizer) {
         let location = sender.locationInView(sender.view)
         let location2 = self.convertPointToView(location)
+        
+        switch sender.state {
+            case .Changed:
+                selected?.moveToPoint(location2)
+            case .Ended:
+                selected = nil
+                selected?.handle?.color = UIColor.blueColor()
+            default:
+                break
+        }
+
+        
         for test in nodesAtPoint(location2) {
             let handle = test as SKSpriteNode
             
             for leg in nodes! {
                 if leg.handle! === handle {
-                    handle.color = UIColor.yellowColor()
-                    leg.moveToPoint(CGPointZero)
-                    leg.updateHandle()
+                    switch sender.state {
+                        case .Began:
+                            selected = leg
+                            handle.color = UIColor.yellowColor()
+                        default:
+                        break
+                    }
+                    break
                 }
             }
         }
