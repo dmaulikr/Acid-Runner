@@ -16,11 +16,14 @@ Did you know that every third man swallows a spider during sleep? How many of th
 
 Milestone #3
 - [x] spadające przeszkody z góry
-- [ ] osobno grafika ściany, tło i kwas
+- [ ] osobno grafika ściany, tło i kwasu
+  - [ ] kolejność kwasu
+  - [ ] animacja powierzchni kwasu
 - [ ] podnoszenie się kwasu
 
 Milestone #4
-- [ ] spadające itemy
+- [ ] fizyka spadających itemów
+- [ ] zasady spadających itemów
 - [ ] grafiki itemów
 
 Milestone #5
