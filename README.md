@@ -20,6 +20,13 @@ Milestone #3
 - [ ] podnoszenie się kwasu
 
 Milestone #4
+- [ ] spadające itemy
+- [ ] grafiki itemów
+
+Milestone #5
+- [ ] intro
+
+Milestone #6
 - [ ] dźwięki! :notes::dog::clap::two_hearts:
 
 Reczy do zrobienia/naprawienia:
