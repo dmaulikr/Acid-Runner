@@ -79,6 +79,30 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
+        var contactBodies = sortContactBodiesByCategoryBitMask(contact.bodyA, b: contact.bodyB)
+        
+        if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Spider != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.DroppedItem != 0) {
+            droppedItemDidCollideWithSpider(contactBodies.firstBody.node as SKSpriteNode, item: contactBodies.secondBody.node as SKSpriteNode)
+        }
+        else if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Spider != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.Acid != 0) {
+            gameOver()
+        }
+        
+    }
+    
+    func sortContactBodiesByCategoryBitMask(a: SKPhysicsBody, b: SKPhysicsBody) -> (firstBody: SKPhysicsBody, secondBody: SKPhysicsBody) {
+        if a.categoryBitMask < b.categoryBitMask {
+            return (a,b)
+        } else {
+            return (b,a)
+        }
+    }
+    
+    func droppedItemDidCollideWithSpider (spider: SKSpriteNode, item: SKSpriteNode) {
+        
+    }
+    
+    func gameOver() {
         self.view?.paused = true
         let label = SKLabelNode(text: "Game over!")
         label.position = CGPointMake(self.size.width / 2, self.size.height / 2)
@@ -112,8 +136,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
         ball.physicsBody?.allowsRotation = false
-        ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider
         ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider
         ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
     }
     
@@ -186,6 +210,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         body?.physicsBody = SKPhysicsBody(circleOfRadius: 30)
         body?.physicsBody?.affectedByGravity = false
         body?.physicsBody?.categoryBitMask = PhysicsCategory.Spider
+        body?.physicsBody?.collisionBitMask = PhysicsCategory.DroppedItem
         body?.shadowCastBitMask = LightingCategory.MainLightSource
         let wait = SKAction.waitForDuration(2)
         let frames = [SKTexture(imageNamed: "korpusik_mrugniety"), SKTexture(imageNamed: "korpusik")]
