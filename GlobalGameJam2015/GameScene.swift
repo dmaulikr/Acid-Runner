@@ -24,9 +24,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     let baseColor: SKColor = SKColorWithRGB(170, 57, 57)
     let secondaryColor: SKColor = SKColorWithRGB(128, 21, 21)
+    let shadowColor: SKColor = SKColorWithRGBA(0, 0, 0, 60)
     
     let mainLightningBitMask: UInt32 = 1
-    
     
     override func didMoveToView(view: SKView) {
         nodes = []
@@ -107,8 +107,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         body = SKSpriteNode(texture: SKTexture(imageNamed: "korpusik"))
         body?.size = CGSizeMake(80, 80)
         body?.position = CGPointMake(self.size.width / 2, self.size.height / 2)
+        body?.shadowCastBitMask = mainLightningBitMask
         addChild(body!)
     }
+
     func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var backgroundNode = SKSpriteNode(color: baseColor, size: CGSizeMake(CGRectGetWidth(view.frame)-wallWidth*2, CGRectGetHeight(view.frame)))
         backgroundNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
@@ -119,9 +121,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     func letThereBeLight(view: SKView) {
         var light = SKLightNode()
-        light.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame) + 50.0)
+        light.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame) + 100.0)
         light.categoryBitMask = mainLightningBitMask
         light.ambientColor = secondaryColor
+        light.shadowColor = shadowColor
+        light.falloff = 2
         addChild(light)
         lightNode = light
     }
