@@ -32,6 +32,7 @@
 		BBD8950B1A72AE7C003FF4C0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBD8950A1A72AE7C003FF4C0 /* Images.xcassets */; };
 		BBD8950E1A72AE7C003FF4C0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBD8950C1A72AE7C003FF4C0 /* LaunchScreen.xib */; };
 		BBD8951A1A72AE7C003FF4C0 /* GlobalGameJam2015Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD895191A72AE7C003FF4C0 /* GlobalGameJam2015Tests.swift */; };
+		D4FB23FE1A74EF4C002CCFE0 /* AcidSurface.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D4FB23FD1A74EF4C002CCFE0 /* AcidSurface.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		BBD895131A72AE7C003FF4C0 /* GlobalGameJam2015Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlobalGameJam2015Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBD895181A72AE7C003FF4C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBD895191A72AE7C003FF4C0 /* GlobalGameJam2015Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalGameJam2015Tests.swift; sourceTree = "<group>"; };
+		D4FB23FD1A74EF4C002CCFE0 /* AcidSurface.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AcidSurface.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				BB0FCB1F1A742B7400712BDF /* Spider.swift */,
 				BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */,
 				BBD8950A1A72AE7C003FF4C0 /* Images.xcassets */,
+				D4FB23FD1A74EF4C002CCFE0 /* AcidSurface.atlas */,
 				BBD895011A72AE7C003FF4C0 /* GameScene.sks */,
 				BBD895071A72AE7C003FF4C0 /* Main.storyboard */,
 				BBD8950C1A72AE7C003FF4C0 /* LaunchScreen.xib */,
@@ -263,6 +266,7 @@
 			files = (
 				BB73F5121A740545007453BC /* shader.fsh in Resources */,
 				BBD8950E1A72AE7C003FF4C0 /* LaunchScreen.xib in Resources */,
+				D4FB23FE1A74EF4C002CCFE0 /* AcidSurface.atlas in Resources */,
 				BBD8950B1A72AE7C003FF4C0 /* Images.xcassets in Resources */,
 				BBD895021A72AE7C003FF4C0 /* GameScene.sks in Resources */,
 				BBD895091A72AE7C003FF4C0 /* Main.storyboard in Resources */,

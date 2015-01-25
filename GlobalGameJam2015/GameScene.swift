@@ -151,8 +151,29 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         acidNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(acidNode)
         acid = acidNode
+        
+        createAcidSurface(view, acidNode: acidNode)
     }
     
+    func createAcidSurface(view: SKView, acidNode: SKSpriteNode) {
+        var surfaceFrames: [SKTexture] = []
+        let surfaceAnimatedAtlas = SKTextureAtlas(named: "AcidSurface")
+        
+        for i in 1...surfaceAnimatedAtlas.textureNames.count {
+            let textureName = "acid_surface_0\(i)"
+            var texture = surfaceAnimatedAtlas.textureNamed(textureName)
+            surfaceFrames.append(texture)
+        }
+        
+        let surfaceNode = SKSpriteNode(texture: surfaceFrames.first)
+        surfaceNode.position = CGPoint(x: 0.0,y: 240)   // TODO: ?
+        surfaceNode.lightingBitMask = LightingCategory.MainLightSource
+        acidNode.addChild(surfaceNode)
+        surfaceNode.bringToFront()  // TODO: ?
+        
+        surfaceNode.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(surfaceFrames, timePerFrame: 0.1)))
+    }
+
     func createEsophagus(view: SKView) {
         let center = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
         
