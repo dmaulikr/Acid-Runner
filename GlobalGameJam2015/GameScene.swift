@@ -73,6 +73,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         startUpMyGravityPlayground(view)
         self.physicsWorld.contactDelegate = self
+        
+        startUpHearthburn()
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -123,6 +125,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         var sequence = SKAction.sequence([waitAction, dropItemAction])
         
         runAction(SKAction.repeatActionForever(sequence))
+    }
+    
+    func startUpHearthburn() {
+        var waitAction = SKAction.waitForDuration(6.0)
+        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 50.0), duration: 5.0)
+        var sequence = SKAction.sequence([waitAction, moveAction])
+        
+        acid?.runAction(SKAction.repeatActionForever(sequence))
     }
     
     func createAcid(view: SKView) {
