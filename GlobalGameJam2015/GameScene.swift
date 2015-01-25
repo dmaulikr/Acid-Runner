@@ -51,6 +51,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var lightNode: SKLightNode?
     let lightSwitch: Bool = false
     
+    var heightLabel: SKLabelNode?
+    
     let wallWidth: CGFloat = 35.0
     
     let baseColor: SKColor = SKColorWithRGB(170, 57, 57)
@@ -60,6 +62,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var correctingBody = true
     
     var spider: Spider?
+    
+    let levelHeight: CGFloat = 100.0
+    var currentSpiderHeight: Int = 100
+    var currentLevel = 1
+    
+    var acidAction: SKAction?
     
     override func didMoveToView(view: SKView) {
         createSceneContents(view)
@@ -144,6 +152,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         var sequence = SKAction.sequence([waitAction, moveAction])
         
         acid?.runAction(SKAction.repeatActionForever(sequence))
+        acidAction = waitAction
     }
     
     func createAcid(view: SKView) {
@@ -248,9 +257,28 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         createEsophagus(view)
         createAcid(view)
         
+        createHeightLabel(view)
+        updateHeightLabel(currentLevel)
+        
         if lightSwitch {
             letThereBeLight(view)
         }
+    }
+    
+    func createHeightLabel(view: SKView) {
+        let label = SKLabelNode(text: "\(currentSpiderHeight)")
+        label.position = CGPoint(x: view.frame.size.width - 30, y: 10)
+        label.fontName = "HelveticaNeue-Bold"
+        label.fontSize = 30
+        label.fontColor = SKColor.orangeColor()
+        label.zPosition = ZPosition.HUD.rawValue
+        addChild(label)
+        heightLabel = label
+    }
+
+    func updateHeightLabel(value: Int) {
+        heightLabel?.text = "\(value)"
+        acidAction?.duration = 1.0
     }
     
     func createWallNode(wallWidth: CGFloat, wallHeight: CGFloat) -> SKSpriteNode {
@@ -291,6 +319,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         if let spider = self.spider {
             if spider.body.position.y > 0.85 * self.size.height && !spider.bodyPanning {
                 bodyCorrected(CGPointMake(0, 200))
+                updateHeightLabel(++currentLevel)
             }
             
             spider.update(currentTime - lastUpdate)
