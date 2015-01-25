@@ -13,7 +13,7 @@
 		BB2982411A751FA6007F461E /* death.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB29823B1A751FA6007F461E /* death.wav */; };
 		BB2982421A751FA6007F461E /* falling.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB29823C1A751FA6007F461E /* falling.wav */; };
 		BB2982431A751FA6007F461E /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB29823D1A751FA6007F461E /* hit.wav */; };
-		BB2982441A751FA6007F461E /* plum2.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB29823E1A751FA6007F461E /* plum2.wav */; };
+		BB2982441A751FA6007F461E /* plum.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB29823E1A751FA6007F461E /* plum.wav */; };
 		BB2982451A751FA6007F461E /* wall1.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB29823F1A751FA6007F461E /* wall1.wav */; };
 		BB2982461A751FA6007F461E /* wall2.wav in Resources */ = {isa = PBXBuildFile; fileRef = BB2982401A751FA6007F461E /* wall2.wav */; };
 		BB6298C71A739DAD00C39464 /* Leg.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C61A739DAD00C39464 /* Leg.swift */; };
@@ -58,7 +58,7 @@
 		BB29823B1A751FA6007F461E /* death.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = death.wav; sourceTree = "<group>"; };
 		BB29823C1A751FA6007F461E /* falling.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = falling.wav; sourceTree = "<group>"; };
 		BB29823D1A751FA6007F461E /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
-		BB29823E1A751FA6007F461E /* plum2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = plum2.wav; sourceTree = "<group>"; };
+		BB29823E1A751FA6007F461E /* plum.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = plum.wav; sourceTree = "<group>"; };
 		BB29823F1A751FA6007F461E /* wall1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wall1.wav; sourceTree = "<group>"; };
 		BB2982401A751FA6007F461E /* wall2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wall2.wav; sourceTree = "<group>"; };
 		BB6298C61A739DAD00C39464 /* Leg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Leg.swift; sourceTree = "<group>"; };
@@ -164,7 +164,7 @@
 				BB29823B1A751FA6007F461E /* death.wav */,
 				BB29823C1A751FA6007F461E /* falling.wav */,
 				BB29823D1A751FA6007F461E /* hit.wav */,
-				BB29823E1A751FA6007F461E /* plum2.wav */,
+				BB29823E1A751FA6007F461E /* plum.wav */,
 				BB29823F1A751FA6007F461E /* wall1.wav */,
 				BB2982401A751FA6007F461E /* wall2.wav */,
 				BBA58B071A72FC6200A4F184 /* SKTUtils */,
@@ -284,7 +284,7 @@
 				BBD8950B1A72AE7C003FF4C0 /* Images.xcassets in Resources */,
 				BB29822E1A750EE8007F461E /* intro.mp4 in Resources */,
 				BB2982421A751FA6007F461E /* falling.wav in Resources */,
-				BB2982441A751FA6007F461E /* plum2.wav in Resources */,
+				BB2982441A751FA6007F461E /* plum.wav in Resources */,
 				BBD895021A72AE7C003FF4C0 /* GameScene.sks in Resources */,
 				BB2982431A751FA6007F461E /* hit.wav in Resources */,
 				BB2982411A751FA6007F461E /* death.wav in Resources */,

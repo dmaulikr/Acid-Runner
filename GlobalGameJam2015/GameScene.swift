@@ -15,6 +15,7 @@ struct PhysicsCategory {
     static let Acid         : UInt32 = 0b10
     static let Wall         : UInt32 = 0b100
     static let DroppedItem  : UInt32 = 0b1000
+    static let UsedItem     : UInt32 = 0b10000
 }
 
 struct LightingCategory {
@@ -101,6 +102,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
         else if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Spider != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.Acid != 0) {
             gameOver()
+        } else if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Acid != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.UsedItem != 0) {
+            runAction(SKAction.playSoundFileNamed("plum.wav", waitForCompletion: false))
         }
         
     }
@@ -115,6 +118,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func droppedItemDidCollideWithSpider (spider: SKSpriteNode, item: SKSpriteNode) {
         if let spidey = self.spider {
+            item.physicsBody?.categoryBitMask = PhysicsCategory.UsedItem
+            runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
             spidey.move(-60.0)
         }
     }
@@ -163,7 +168,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         acidNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: CGRectGetWidth(acidNode.frame), height: CGRectGetHeight(acidNode.frame) - acidTransparentAreaHeight*2))
         acidNode.physicsBody?.dynamic = false
         acidNode.physicsBody?.categoryBitMask = PhysicsCategory.Acid
-        acidNode.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
+        acidNode.physicsBody?.contactTestBitMask = PhysicsCategory.Spider | PhysicsCategory.UsedItem
+        acidNode.physicsBody?.collisionBitMask = 0x0
         acidNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(acidNode)
         acid = acidNode
@@ -244,10 +250,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
         ball.physicsBody?.allowsRotation = true
-        ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem
+        ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem | PhysicsCategory.UsedItem
         ball.physicsBody?.restitution = 0.8
         ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider | PhysicsCategory.Wall
-        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
+        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider | PhysicsCategory.Acid
         ball.lightingBitMask = LightingCategory.MainLightSource
     }
     
