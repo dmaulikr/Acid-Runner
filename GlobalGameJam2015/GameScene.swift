@@ -106,7 +106,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func droppedItemDidCollideWithSpider (spider: SKSpriteNode, item: SKSpriteNode) {
-        
+        if let spidey = self.spider {
+            spidey.move(-60.0)
+        }
     }
     
     func gameOver() {
@@ -133,7 +135,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func startUpHearthburn() {
         var waitAction = SKAction.waitForDuration(1.0)
-        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 70.0), duration: 1.0)
+        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 50.0), duration: 1.0)
         var sequence = SKAction.sequence([waitAction, moveAction])
         
         acid?.runAction(SKAction.repeatActionForever(sequence))
@@ -151,8 +153,29 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         acidNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(acidNode)
         acid = acidNode
+        
+        createAcidSurface(view, acidNode: acidNode)
     }
     
+    func createAcidSurface(view: SKView, acidNode: SKSpriteNode) {
+        var surfaceFrames: [SKTexture] = []
+        let surfaceAnimatedAtlas = SKTextureAtlas(named: "AcidSurface")
+        
+        for i in 1...surfaceAnimatedAtlas.textureNames.count {
+            let textureName = "acid_surface_0\(i)"
+            var texture = surfaceAnimatedAtlas.textureNamed(textureName)
+            surfaceFrames.append(texture)
+        }
+        
+        let surfaceNode = SKSpriteNode(texture: surfaceFrames.first)
+        surfaceNode.position = CGPoint(x: 0.0,y: 240)   // TODO: ?
+        surfaceNode.lightingBitMask = LightingCategory.MainLightSource
+        acidNode.addChild(surfaceNode)
+        surfaceNode.bringToFront()  // TODO: ?
+        
+        surfaceNode.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(surfaceFrames, timePerFrame: 0.1)))
+    }
+
     func createEsophagus(view: SKView) {
         let center = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
         
@@ -194,10 +217,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createBalls(view: SKView) {
         let offsetFromWalls = CGFloat(10)
-        let ballsDropPointOffset = CGFloat(50)
-        let ballSize = CGSize(width: 10.0, height: 10.0)
+        let ballsDropPointOffset = CGFloat(100)
+        let ballSize = CGSize(width: 30.0, height: 30.0)
         
-        var ball = SKSpriteNode(color: UIColor.greenColor(), size: ballSize)
+        let items = ["apple", "earthworm", "sausage"]
+        let randomIndex = Int.random(min: 0, max: 2)
+        
+        var ball = SKSpriteNode(texture: SKTexture(imageNamed:items[randomIndex]), color: SKColor.clearColor(), size: ballSize)
         ball.position = CGPoint(x: CGFloat.random(min: wallWidth + offsetFromWalls, max: CGRectGetWidth(view.frame) - wallWidth - offsetFromWalls), y: CGRectGetHeight(view.frame) + ballsDropPointOffset)
         ball.zPosition = ZPosition.Items.rawValue
         addChild(ball)
@@ -205,6 +231,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
         ball.physicsBody?.allowsRotation = true
         ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem
+        ball.physicsBody?.restitution = 0.8
         ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider | PhysicsCategory.Wall
         ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
         ball.lightingBitMask = LightingCategory.MainLightSource
