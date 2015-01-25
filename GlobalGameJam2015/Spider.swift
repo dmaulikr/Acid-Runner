@@ -15,7 +15,9 @@ class Spider: NSObject {
     var leftSideLegs: [Leg] = []
     var rightSideLegs: [Leg] = []
     var timeFromLastSlide: NSTimeInterval = 0
+    var selectedLeg: Leg?
     let speed: CGFloat = 6
+    var wallWidth: CGFloat = 0
     
     var bodyPanning = false
     
@@ -24,6 +26,7 @@ class Spider: NSObject {
     }
     
     func setupSpiderFor(wallWidth: CGFloat) {
+        self.wallWidth = wallWidth
         setupBody()
         legs = setupLegs(wallWidth)
     }
@@ -34,9 +37,18 @@ class Spider: NSObject {
         body.zPosition = 2
         body.position = middleOfContainer()
         
+        setupBodyPhysics(body)
         addBlinkingAnimation(body)
         
         container.addChild(body)
+    }
+    
+    private func setupBodyPhysics(body: SKSpriteNode) {
+        body.physicsBody = SKPhysicsBody(circleOfRadius: 30)
+        body.physicsBody?.affectedByGravity = false
+        body.physicsBody?.categoryBitMask = PhysicsCategory.Spider
+        body.physicsBody?.collisionBitMask = PhysicsCategory.DroppedItem
+        body.shadowCastBitMask = LightingCategory.MainLightSource
     }
     
     private func addBlinkingAnimation(body: SKSpriteNode) {
@@ -86,7 +98,7 @@ class Spider: NSObject {
     func correctedBodyPosition() -> CGPoint {
         var leftSideAverage = calculateAverageForSide(leftSideLegs);
         var rightSideAverage = calculateAverageForSide(rightSideLegs);
-        return CGPointMake(body.position.x, (leftSideAverage + rightSideAverage) / 2.0)
+        return CGPointMake(middleOfContainer().x, (leftSideAverage + rightSideAverage) / 2.0)
     }
     
     private func calculateAverageForSide(legs: [Leg]) -> CGFloat {
@@ -150,6 +162,54 @@ class Spider: NSObject {
             
         }
     }
+    
+    func didRecognizeLegPan(sender: UIPanGestureRecognizer) {
+        let location = container.convertPointToView(sender.locationInView(sender.view))
+        
+        switch sender.state {
+        case .Began:
+            selectedLeg = getSelectedLegForLocation(location)
+        case .Changed:
+            selectedLeg?.moveToPoint(location)
+        case .Ended:
+            if let leg = selectedLeg {
+                if contains(leftSideLegs, leg) {
+                    leg.moveToPoint(CGPointMake(wallWidth, leg.point!.y))
+                } else {
+                    leg.moveToPoint(CGPointMake(container.size.width - wallWidth, leg.point!.y))
+                }
+            }
+            
+            selectedLeg = nil
+        default:
+            break
+        }
+    }
+    
+    func getSelectedLegForLocation(location: CGPoint) -> Leg? {
+        for node in container.nodesAtPoint(location) {
+            let legOrNil = getLegWithSelectedHandle(node as SKSpriteNode)
+            
+            if let leg = legOrNil {
+                return leg
+            }
+        }
+        
+        return nil
+    }
+    
+    func getLegWithSelectedHandle(handle: SKSpriteNode) -> Leg? {
+        for leg in legs {
+            if leg.handle! === handle {
+                return leg
+            }
+        }
+        
+        return nil
+    }
+
+    
+    
     
     func locationInBody(location: CGPoint) -> Bool {
         for node in container.nodesAtPoint(location) {
