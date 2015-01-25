@@ -165,7 +165,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
         ball.physicsBody?.allowsRotation = false
         ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem
-        ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider
+        ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider | PhysicsCategory.Wall
         ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
     }
     
@@ -185,10 +185,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.position = CGPoint(x: wallWidth/2.0, y: wallHeight/2.0)
         wallNode.zPosition = ZPosition.Walls.rawValue
-        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
+        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
         wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
-        wallNode.position = CGPoint(x: CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
         wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
         leftWall = wallNode
@@ -196,10 +196,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
         var wallNode = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - wallWidth/2.0, y: wallHeight/2.0)
         wallNode.zPosition = ZPosition.Walls.rawValue
-        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: CGRectGetWidth(view.frame) - CGRectGetWidth(view.frame), y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
+        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
         wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
-        wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
         wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
         rightWall = wallNode
