@@ -122,7 +122,7 @@ class Spider: NSObject {
         let offset = CGFloat(delta) * speed
         
         for leg in legs {
-            leg.moveToPoint(CGPointMake(leg.point!.x, leg.point!.y - offset))
+            leg.moveToPoint(CGPointMake(leg.point!.x, leg.point!.y - offset), flag: bodyPanning)
         }
     }
     
@@ -150,18 +150,27 @@ class Spider: NSObject {
             if bodyPanning {
                 body.position = location
             }
+            
             break
         case .Ended:
             if bodyPanning {
-                let move = SKAction.moveTo(correctedBodyPosition(), duration: 1, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0)
-                body.runAction(move, completion: { () -> Void in
-                    self.bodyPanning = false
-                })
+                bounceAnimation()
             }
         default:
             break
             
         }
+    }
+    
+    func vectorFromPoints(point1: CGPoint, point2: CGPoint) -> CGVector {
+        return CGVectorMake(point2.x - point1.x, point2.y - point1.y);
+    }
+    
+    func bounceAnimation() {
+        let move = SKAction.moveTo(correctedBodyPosition(), duration: 1, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0)
+        body.runAction(move, completion: { () -> Void in
+            self.bodyPanning = false
+        })
     }
     
     func didRecognizeLegPan(sender: UIPanGestureRecognizer) {
@@ -209,9 +218,6 @@ class Spider: NSObject {
         return nil
     }
 
-    
-    
-    
     func locationInBody(location: CGPoint) -> Bool {
         for node in container.nodesAtPoint(location) {
             if node as NSObject == body {
