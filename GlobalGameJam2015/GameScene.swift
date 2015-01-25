@@ -45,23 +45,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var spider: Spider?
     
     override func didMoveToView(view: SKView) {
-        let background = SKSpriteNode(texture: SKTexture(imageNamed: "tlo"), size: self.size)
-        background.position = CGPointMake(self.size.width / 2, self.size.height / 2)
-        addChild(background)
-        
-        let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
-        acid.position = CGPointMake(self.size.width / 2, -200)
-        acid.zPosition = 1
-        acid.physicsBody = SKPhysicsBody(rectangleOfSize: acid.size)
-        acid.physicsBody?.dynamic = false
-        acid.physicsBody?.categoryBitMask = PhysicsCategory.Acid
-        acid.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
-        addChild(acid)
+        createSceneContents(view)
         
         spider = Spider(container: self)
         spider!.setupSpiderFor(35.0)
         
-        createSceneContents(view)
         let legPanRecognizer = UIPanGestureRecognizer(target: spider!, action:Selector("didRecognizeLegPan:"))
         view.addGestureRecognizer(legPanRecognizer)
         legPanRecognizer.delegate = self
@@ -135,6 +123,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         addChild(acid)
     }
     
+    func createEsophagus(view: SKView) {
+        let background = SKSpriteNode(texture: SKTexture(imageNamed: "tlo"), size: self.size)
+        background.position = CGPointMake(self.size.width / 2, self.size.height / 2)
+        addChild(background)
+    }
+    
     func createBalls(view: SKView) {
         let offsetFromWalls = CGFloat(10)
         let ballsDropPointOffset = CGFloat(50)
@@ -154,6 +148,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createSceneContents(view: SKView) {
         let wallHeight = view.frame.height
+        
+        createEsophagus(view)
         
         createAcid(view)
         
