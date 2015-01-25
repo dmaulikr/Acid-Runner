@@ -45,6 +45,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var acid: SKSpriteNode?
     
     var lightNode: SKLightNode?
+    let lightSwitch: Bool = false
     
     let wallWidth: CGFloat = 35.0
     
@@ -134,6 +135,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         acidNode.physicsBody?.dynamic = false
         acidNode.physicsBody?.categoryBitMask = PhysicsCategory.Acid
         acidNode.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
+        acidNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(acidNode)
         acid = acidNode
     }
@@ -144,11 +146,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         let background = SKSpriteNode(texture: SKTexture(imageNamed: "esophagus_surface"), size: view.frame.size)
         background.position = center
         background.zPosition = ZPosition.Background.rawValue
+        background.lightingBitMask = LightingCategory.MainLightSource
         addChild(background)
         
         let walls = SKSpriteNode(texture: SKTexture(imageNamed: "esophagus_walls"), color: SKColor.clearColor(), size: view.frame.size)
         walls.position = center
         walls.zPosition = ZPosition.Walls.rawValue
+        walls.lightingBitMask = LightingCategory.MainLightSource
         addChild(walls)
     }
     
@@ -163,10 +167,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         addChild(ball)
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
-        ball.physicsBody?.allowsRotation = false
+        ball.physicsBody?.allowsRotation = true
         ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem
         ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider | PhysicsCategory.Wall
         ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
+        ball.lightingBitMask = LightingCategory.MainLightSource
     }
     
     func createSceneContents(view: SKView) {
@@ -180,29 +185,33 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         createRightWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
         createBackground(view, wallWidth: wallWidth, wallHeight: wallHeight)
         
-        letThereBeLight(view)
+        if lightSwitch {
+            letThereBeLight(view)
+        }
     }
     
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
         wallNode.position = CGPoint(x: wallWidth/2.0, y: wallHeight/2.0)
-        wallNode.zPosition = ZPosition.Walls.rawValue
-        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
-        wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
-        wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
         leftWall = wallNode
     }
     
     func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
         wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - wallWidth/2.0, y: wallHeight/2.0)
-        wallNode.zPosition = ZPosition.Walls.rawValue
-        wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
-        wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
-        wallNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(wallNode)
         rightWall = wallNode
+    }
+    
+    func createWallNode(wallWidth: CGFloat, wallHeight: CGFloat) -> SKSpriteNode {
+        var node = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        node.zPosition = ZPosition.Walls.rawValue
+        node.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
+        node.physicsBody?.categoryBitMask = PhysicsCategory.Wall
+        node.lightingBitMask = LightingCategory.MainLightSource
+        
+        return node
     }
 
     func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
@@ -215,12 +224,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func letThereBeLight(view: SKView) {
         var light = SKLightNode()
-        let lightNodeOffset = CGFloat(100.0)
+        let lightNodeOffset = CGFloat(50.0)
         light.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame) + lightNodeOffset)
         light.categoryBitMask = LightingCategory.MainLightSource
-        light.ambientColor = secondaryColor
-        light.shadowColor = shadowColor
-        light.falloff = 2
+        light.falloff = 0.5
         addChild(light)
         lightNode = light
     }
