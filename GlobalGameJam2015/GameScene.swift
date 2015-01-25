@@ -34,12 +34,16 @@ enum ZPosition: CGFloat {
 }
 
 class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
+    let acidInitialHeight = CGFloat(40)
+    let acidTransparentAreaHeight = CGFloat(44) // funny, innit?
+
     var lastUpdate: NSTimeInterval = 0
     var selected: Leg?
     var recon: Bool?
     
     var leftWall: SKSpriteNode?
     var rightWall: SKSpriteNode?
+    var walls: [SKSpriteNode] = []
     var background: SKSpriteNode?
     
     var acid: SKSpriteNode?
@@ -128,16 +132,15 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func startUpHearthburn() {
-        var waitAction = SKAction.waitForDuration(6.0)
-        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 50.0), duration: 5.0)
+        var waitAction = SKAction.waitForDuration(1.0)
+        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 70.0), duration: 1.0)
         var sequence = SKAction.sequence([waitAction, moveAction])
         
         acid?.runAction(SKAction.repeatActionForever(sequence))
     }
     
     func createAcid(view: SKView) {
-        let acidInitialHeight = CGFloat(40)
-        let acidTransparentAreaHeight = CGFloat(44) // funny, innit?
+        
         let acidNode = SKSpriteNode(texture: SKTexture(imageNamed: "acid"), color: SKColor.clearColor(), size: CGSize(width: CGRectGetWidth(view.frame), height: CGRectGetHeight(view.frame)))
         acidNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: -(CGRectGetHeight(view.frame)/2.0 - acidInitialHeight - acidTransparentAreaHeight))
         acidNode.zPosition = ZPosition.Acid.rawValue
@@ -159,11 +162,34 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         background.lightingBitMask = LightingCategory.MainLightSource
         addChild(background)
         
-        let walls = SKSpriteNode(texture: SKTexture(imageNamed: "esophagus_walls"), color: SKColor.clearColor(), size: view.frame.size)
-        walls.position = center
+        addWallAtPositon(center)
+    }
+    
+    func addWallAtPositon(pos: CGPoint) {
+        let walls = SKSpriteNode(texture: SKTexture(imageNamed: "esophagus_walls"), color: SKColor.clearColor(), size: self.size)
+        walls.position = pos
         walls.zPosition = ZPosition.Walls.rawValue
         walls.lightingBitMask = LightingCategory.MainLightSource
+        self.walls.append(walls)
+        
+        createLeftWall(wallWidth, wallHeight: self.size.height, wall: walls)
+        createRightWall(wallWidth, wallHeight: self.size.height, wall: walls)
+        
         addChild(walls)
+    }
+    
+    func createLeftWall(wallWidth: CGFloat, wallHeight: CGFloat, wall: SKSpriteNode) {
+        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
+        wallNode.position = CGPoint(x: wallWidth/2.0, y: wallHeight/2.0)
+        wall.addChild(wallNode)
+        leftWall = wallNode
+    }
+    
+    func createRightWall(wallWidth: CGFloat, wallHeight: CGFloat, wall: SKSpriteNode) {
+        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
+        wallNode.position = CGPoint(x: self.size.width - wallWidth/2.0, y: wallHeight/2.0)
+        wall.addChild(wallNode)
+        rightWall = wallNode
     }
     
     func createBalls(view: SKView) {
@@ -188,30 +214,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         let wallHeight = view.frame.height
         
         createEsophagus(view)
-        
         createAcid(view)
-        
-        createLeftWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
-        createRightWall(view, wallWidth: wallWidth, wallHeight: wallHeight)
-        createBackground(view, wallWidth: wallWidth, wallHeight: wallHeight)
         
         if lightSwitch {
             letThereBeLight(view)
         }
-    }
-    
-    func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
-        wallNode.position = CGPoint(x: wallWidth/2.0, y: wallHeight/2.0)
-        addChild(wallNode)
-        leftWall = wallNode
-    }
-    
-    func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
-        wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - wallWidth/2.0, y: wallHeight/2.0)
-        addChild(wallNode)
-        rightWall = wallNode
     }
     
     func createWallNode(wallWidth: CGFloat, wallHeight: CGFloat) -> SKSpriteNode {
@@ -250,9 +257,31 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         let delta = currentTime - lastUpdate
         
         if let spider = self.spider {
+            if spider.body.position.y > 0.85 * self.size.height && !spider.bodyPanning {
+                bodyCorrected(CGPointMake(0, 200))
+            }
+            
             spider.update(currentTime - lastUpdate)
+            
         }
         
         lastUpdate = currentTime
+    }
+    
+    func bodyCorrected(delta: CGPoint) {
+        acid?.position -= delta
+        
+        if let wall = walls.last {
+            if wall.position.y <= (self.size.height / 2) + 200 {
+                addWallAtPositon(CGPointMake(self.size.width / 2, self.size.height + wall.position.y))
+            }
+        }
+        
+        
+        for wall in walls {
+            wall.position -= delta
+        }
+        
+        spider?.move(-delta.y)
     }
 }

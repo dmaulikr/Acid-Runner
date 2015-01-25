@@ -18,6 +18,7 @@ class Spider: NSObject {
     var selectedLeg: Leg?
     let speed: CGFloat = 6
     var wallWidth: CGFloat = 0
+    var lastBodyPos: CGPoint = CGPointZero
     
     var bodyPanning = false
     
@@ -97,6 +98,7 @@ class Spider: NSObject {
     }
     
     func correctedBodyPosition() -> CGPoint {
+        
         var leftSideAverage = calculateAverageForSide(leftSideLegs);
         var rightSideAverage = calculateAverageForSide(rightSideLegs);
         return CGPointMake(middleOfContainer().x, (leftSideAverage + rightSideAverage) / 2.0)
@@ -226,5 +228,13 @@ class Spider: NSObject {
         }
         
         return false
+    }
+    
+    func move (offset: CGFloat) {
+        body.position = CGPointMake(body.position.x, body.position.y + offset)
+        for leg in legs {
+            leg.moveToPoint(CGPointMake(leg.point!.x, leg.point!.y + offset), flag: true)
+        }
+        correctLegsToBodyPositon()
     }
 }
