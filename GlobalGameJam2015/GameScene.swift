@@ -106,7 +106,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func droppedItemDidCollideWithSpider (spider: SKSpriteNode, item: SKSpriteNode) {
-        
+        if let spidey = self.spider {
+            spidey.move(-60.0)
+        }
     }
     
     func gameOver() {
@@ -133,7 +135,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func startUpHearthburn() {
         var waitAction = SKAction.waitForDuration(1.0)
-        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 70.0), duration: 1.0)
+        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 50.0), duration: 1.0)
         var sequence = SKAction.sequence([waitAction, moveAction])
         
         acid?.runAction(SKAction.repeatActionForever(sequence))
@@ -215,7 +217,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createBalls(view: SKView) {
         let offsetFromWalls = CGFloat(10)
-        let ballsDropPointOffset = CGFloat(50)
+        let ballsDropPointOffset = CGFloat(100)
         let ballSize = CGSize(width: 30.0, height: 30.0)
         
         let items = ["apple", "earthworm", "sausage"]
@@ -229,6 +231,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
         ball.physicsBody?.allowsRotation = true
         ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem
+        ball.physicsBody?.restitution = 0.8
         ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider | PhysicsCategory.Wall
         ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
         ball.lightingBitMask = LightingCategory.MainLightSource
