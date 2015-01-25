@@ -200,11 +200,14 @@ class Spider: NSObject {
     
     func getSelectedLegForLocation(location: CGPoint) -> Leg? {
         for node in container.nodesAtPoint(location) {
-            let legOrNil = getLegWithSelectedHandle(node as SKSpriteNode)
-            
-            if let leg = legOrNil {
-                return leg
+            if node is SKSpriteNode {
+                let legOrNil = getLegWithSelectedHandle(node as SKSpriteNode)
+                
+                if let leg = legOrNil {
+                    return leg
+                }
             }
+            
         }
         
         return nil
