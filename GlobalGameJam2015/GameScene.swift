@@ -89,6 +89,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         startUpHearthburn()
     }
     
+    func reloadScene() {
+        var gameScene: GameScene = GameScene(size: self.size)
+        let transition: SKTransition = SKTransition.fadeWithDuration(0.75)
+        self.view?.presentScene(gameScene, transition: transition)
+    }
+    
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -131,6 +137,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         label.fontSize = 60
         label.zPosition = ZPosition.HUD.rawValue
         addChild(label)
+        
+        runAction(SKAction.afterDelay(1.0, runBlock: { () -> Void in
+            self.reloadScene()
+        }))
     }
 
     func startUpMyGravityPlayground(view: SKView) {
