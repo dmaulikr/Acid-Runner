@@ -46,6 +46,7 @@ class Spider: NSObject {
     private func setupBodyPhysics(body: SKSpriteNode) {
         body.physicsBody = SKPhysicsBody(circleOfRadius: 30)
         body.physicsBody?.affectedByGravity = false
+        body.physicsBody?.angularDamping = 0.9
         body.physicsBody?.categoryBitMask = PhysicsCategory.Spider
         body.physicsBody?.collisionBitMask = PhysicsCategory.DroppedItem
         body.shadowCastBitMask = LightingCategory.MainLightSource
