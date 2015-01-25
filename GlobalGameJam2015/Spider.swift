@@ -186,9 +186,11 @@ class Spider: NSObject {
         case .Ended:
             if let leg = selectedLeg {
                 if contains(leftSideLegs, leg) {
+                    container.runAction(SKAction.playSoundFileNamed("wall1.wav", waitForCompletion: false))
                     leg.moveToPoint(CGPointMake(wallWidth, leg.point!.y))
                 } else {
                     leg.moveToPoint(CGPointMake(container.size.width - wallWidth, leg.point!.y))
+                    container.runAction(SKAction.playSoundFileNamed("wall2.wav", waitForCompletion: false))
                 }
             }
             

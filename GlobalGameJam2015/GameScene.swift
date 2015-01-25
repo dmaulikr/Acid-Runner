@@ -112,7 +112,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func gameOver() {
-        self.view?.paused = true
+        let sound = SKAction.playSoundFileNamed("death.wav", waitForCompletion: true)
+        let block = SKAction.runBlock { () -> Void in
+            self.view!.paused = true
+        }
+        runAction(SKAction.sequence([sound, block]))
+        
         let label = SKLabelNode(text: "Game over!")
         label.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         label.fontSize = 60
