@@ -42,6 +42,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var rightWall: SKSpriteNode?
     var background: SKSpriteNode?
     
+    var acid: SKSpriteNode?
+    
     var lightNode: SKLightNode?
     
     let wallWidth: CGFloat = 35.0
@@ -123,14 +125,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func createAcid(view: SKView) {
-        let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
-        acid.position = CGPointMake(self.size.width / 2, -200)
-        acid.zPosition = ZPosition.Acid.rawValue
-        acid.physicsBody = SKPhysicsBody(rectangleOfSize: acid.size)
-        acid.physicsBody?.dynamic = false
-        acid.physicsBody?.categoryBitMask = PhysicsCategory.Acid
-        acid.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
-        addChild(acid)
+        let acidInitialHeight = CGFloat(40)
+        let acidTransparentAreaHeight = CGFloat(44) // funny, innit?
+        let acidNode = SKSpriteNode(texture: SKTexture(imageNamed: "acid"), color: SKColor.clearColor(), size: CGSize(width: CGRectGetWidth(view.frame), height: CGRectGetHeight(view.frame)))
+        acidNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: -(CGRectGetHeight(view.frame)/2.0 - acidInitialHeight - acidTransparentAreaHeight))
+        acidNode.zPosition = ZPosition.Acid.rawValue
+        acidNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: CGRectGetWidth(acidNode.frame), height: CGRectGetHeight(acidNode.frame) - acidTransparentAreaHeight*2))
+        acidNode.physicsBody?.dynamic = false
+        acidNode.physicsBody?.categoryBitMask = PhysicsCategory.Acid
+        acidNode.physicsBody?.contactTestBitMask = PhysicsCategory.Spider
+        addChild(acidNode)
+        acid = acidNode
     }
     
     func createEsophagus(view: SKView) {
