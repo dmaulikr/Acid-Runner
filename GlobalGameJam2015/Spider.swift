@@ -34,7 +34,7 @@ class Spider: NSObject {
     private func setupBody() {
         let bodySize = CGSizeMake(60, 60)
         body = SKSpriteNode(texture: SKTexture(imageNamed: "body_eyes_open"), size: bodySize)
-        body.zPosition = 2
+        body.zPosition = ZPosition.Spider.rawValue
         body.position = middleOfContainer()
         
         setupBodyPhysics(body)
@@ -87,7 +87,7 @@ class Spider: NSObject {
     
     private func createLegAtPoints(outsideEnd: CGPoint, insideEnd: CGPoint) -> Leg {
         let leg = Leg(texture: SKTexture(imageNamed: "leg"))
-        leg.zPosition = 1
+        leg.zPosition = ZPosition.SpiderLegs.rawValue
         leg.setupHandle()
         leg.moveEnd(insideEnd)
         leg.moveToPoint(outsideEnd)

@@ -19,6 +19,7 @@ class Leg: SKSpriteNode {
         anchorPoint = CGPointMake(1, 0.5)
         
         handle = SKSpriteNode(texture: SKTexture(imageNamed: "catch"), size: CGSizeMake(50, 50))
+        handle?.zPosition = ZPosition.HUD.rawValue
         updateHandle()
         addChild(handle!)
     }

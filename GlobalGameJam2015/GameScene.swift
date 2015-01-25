@@ -23,6 +23,16 @@ struct LightingCategory {
     static let MainLightSource  : UInt32 = 0b1
 }
 
+enum ZPosition: CGFloat {
+    case Background
+    case SpiderLegs
+    case Spider
+    case Items
+    case Acid
+    case Walls
+    case HUD
+}
+
 class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
     var lastUpdate: NSTimeInterval = 0
     var selected: Leg?
@@ -95,7 +105,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         let label = SKLabelNode(text: "Game over!")
         label.position = CGPointMake(self.size.width / 2, self.size.height / 2)
         label.fontSize = 60
-        label.zPosition = 2.0
+        label.zPosition = ZPosition.HUD.rawValue
         addChild(label)
     }
 
@@ -115,7 +125,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     func createAcid(view: SKView) {
         let acid = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0, alpha: 0.3), size: CGSizeMake(320, 568))
         acid.position = CGPointMake(self.size.width / 2, -200)
-        acid.zPosition = 1.0
+        acid.zPosition = ZPosition.Acid.rawValue
         acid.physicsBody = SKPhysicsBody(rectangleOfSize: acid.size)
         acid.physicsBody?.dynamic = false
         acid.physicsBody?.categoryBitMask = PhysicsCategory.Acid
@@ -124,9 +134,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func createEsophagus(view: SKView) {
-        let background = SKSpriteNode(texture: SKTexture(imageNamed: "tlo"), size: self.size)
-        background.position = CGPointMake(self.size.width / 2, self.size.height / 2)
+        let center = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
+        
+        let background = SKSpriteNode(texture: SKTexture(imageNamed: "esophagus_surface"), size: view.frame.size)
+        background.position = center
+        background.zPosition = ZPosition.Background.rawValue
         addChild(background)
+        
+        let walls = SKSpriteNode(texture: SKTexture(imageNamed: "esophagus_walls"), color: SKColor.clearColor(), size: view.frame.size)
+        walls.position = center
+        walls.zPosition = ZPosition.Walls.rawValue
+        addChild(walls)
     }
     
     func createBalls(view: SKView) {
@@ -136,7 +154,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         var ball = SKSpriteNode(color: UIColor.greenColor(), size: ballSize)
         ball.position = CGPoint(x: CGFloat.random(min: wallWidth + offsetFromWalls, max: CGRectGetWidth(view.frame) - wallWidth - offsetFromWalls), y: CGRectGetHeight(view.frame) + ballsDropPointOffset)
-        ball.zPosition = 1.0
+        ball.zPosition = ZPosition.Items.rawValue
         addChild(ball)
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
@@ -161,8 +179,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func createLeftWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
-        wallNode.zPosition = 1.0
+        var wallNode = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.zPosition = ZPosition.Walls.rawValue
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0.0, y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
         wallNode.position = CGPoint(x: CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
@@ -172,8 +190,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func createRightWall(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var wallNode = SKSpriteNode(color: secondaryColor, size: CGSize(width: wallWidth, height: wallHeight))
-        wallNode.zPosition = 1.0
+        var wallNode = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        wallNode.zPosition = ZPosition.Walls.rawValue
         wallNode.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: CGRectGetWidth(view.frame) - CGRectGetWidth(view.frame), y: 0.0, width: wallWidth, height: CGRectGetHeight(view.frame)))
         wallNode.physicsBody?.categoryBitMask = PhysicsCategory.Wall
         wallNode.position = CGPoint(x: CGRectGetWidth(view.frame) - CGRectGetWidth(wallNode.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
