@@ -216,9 +216,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     func createBalls(view: SKView) {
         let offsetFromWalls = CGFloat(10)
         let ballsDropPointOffset = CGFloat(50)
-        let ballSize = CGSize(width: 10.0, height: 10.0)
+        let ballSize = CGSize(width: 30.0, height: 30.0)
         
-        var ball = SKSpriteNode(color: UIColor.greenColor(), size: ballSize)
+        let items = ["apple", "earthworm", "sausage"]
+        let randomIndex = Int.random(min: 0, max: 2)
+        
+        var ball = SKSpriteNode(texture: SKTexture(imageNamed:items[randomIndex]), color: SKColor.clearColor(), size: ballSize)
         ball.position = CGPoint(x: CGFloat.random(min: wallWidth + offsetFromWalls, max: CGRectGetWidth(view.frame) - wallWidth - offsetFromWalls), y: CGRectGetHeight(view.frame) + ballsDropPointOffset)
         ball.zPosition = ZPosition.Items.rawValue
         addChild(ball)
