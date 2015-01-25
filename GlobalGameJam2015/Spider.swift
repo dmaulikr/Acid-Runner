@@ -21,6 +21,7 @@ class Spider: NSObject {
     var lastBodyPos: CGPoint = CGPointZero
     
     var bodyPanning = false
+    var anim = false
     
     init(container: SKScene) {
         self.container = container
@@ -48,6 +49,7 @@ class Spider: NSObject {
         body.physicsBody = SKPhysicsBody(circleOfRadius: 30)
         body.physicsBody?.affectedByGravity = false
         body.physicsBody?.angularDamping = 0.9
+        body.physicsBody?.allowsRotation = false
         body.physicsBody?.categoryBitMask = PhysicsCategory.Spider
         body.physicsBody?.collisionBitMask = PhysicsCategory.DroppedItem
         body.shadowCastBitMask = LightingCategory.MainLightSource
@@ -145,11 +147,11 @@ class Spider: NSObject {
         
         switch sender.state {
         case .Began:
-            if locationInBody(location) {
+            if locationInBody(location) && !bodyPanning {
                 bodyPanning = true
             }
         case .Changed:
-            if bodyPanning {
+            if bodyPanning && !anim {
                 body.position = location
             }
             
@@ -169,9 +171,11 @@ class Spider: NSObject {
     }
     
     func bounceAnimation() {
-        let move = SKAction.moveTo(correctedBodyPosition(), duration: 1, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0)
+        anim = true
+        let move = SKAction.moveTo(correctedBodyPosition(), duration: 0.8, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0)
         body.runAction(move, completion: { () -> Void in
             self.bodyPanning = false
+            self.anim = false
         })
     }
     
