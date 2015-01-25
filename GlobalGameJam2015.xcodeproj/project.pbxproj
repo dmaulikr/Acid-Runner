@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		BB0FCB201A742B7400712BDF /* Spider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0FCB1F1A742B7400712BDF /* Spider.swift */; };
+		BB29822A1A750623007F461E /* IntroScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2982291A750623007F461E /* IntroScene.swift */; };
+		BB29822E1A750EE8007F461E /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = BB29822B1A75067F007F461E /* intro.mp4 */; };
 		BB6298C71A739DAD00C39464 /* Leg.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C61A739DAD00C39464 /* Leg.swift */; };
 		BB6298C91A73B17300C39464 /* SpriteKit+Spring.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */; };
-		BB73F5121A740545007453BC /* shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = BB73F5111A740545007453BC /* shader.fsh */; };
-		BB73F5161A740639007453BC /* UniformGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = BB73F5151A740639007453BC /* UniformGenerator.m */; };
 		BBA58B141A72FC6200A4F184 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B081A72FC6200A4F184 /* CGFloat+Extensions.swift */; };
 		BBA58B151A72FC6200A4F184 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B091A72FC6200A4F184 /* CGPoint+Extensions.swift */; };
 		BBA58B161A72FC6200A4F184 /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA58B0A1A72FC6200A4F184 /* CGVector+Extensions.swift */; };
@@ -46,12 +46,10 @@
 
 /* Begin PBXFileReference section */
 		BB0FCB1F1A742B7400712BDF /* Spider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spider.swift; sourceTree = "<group>"; };
+		BB2982291A750623007F461E /* IntroScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroScene.swift; sourceTree = "<group>"; };
+		BB29822B1A75067F007F461E /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
 		BB6298C61A739DAD00C39464 /* Leg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Leg.swift; sourceTree = "<group>"; };
 		BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SpriteKit+Spring.swift"; sourceTree = "<group>"; };
-		BB73F5111A740545007453BC /* shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.fsh; sourceTree = "<group>"; };
-		BB73F5131A740638007453BC /* GlobalGameJam2015-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GlobalGameJam2015-Bridging-Header.h"; sourceTree = "<group>"; };
-		BB73F5141A740639007453BC /* UniformGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniformGenerator.h; sourceTree = "<group>"; };
-		BB73F5151A740639007453BC /* UniformGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniformGenerator.m; sourceTree = "<group>"; };
 		BBA58B081A72FC6200A4F184 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		BBA58B091A72FC6200A4F184 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		BBA58B0A1A72FC6200A4F184 /* CGVector+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGVector+Extensions.swift"; sourceTree = "<group>"; };
@@ -139,6 +137,7 @@
 				BBD894FF1A72AE7C003FF4C0 /* AppDelegate.swift */,
 				BBD895051A72AE7C003FF4C0 /* GameViewController.swift */,
 				BBD895031A72AE7C003FF4C0 /* GameScene.swift */,
+				BB2982291A750623007F461E /* IntroScene.swift */,
 				BB6298C61A739DAD00C39464 /* Leg.swift */,
 				BB0FCB1F1A742B7400712BDF /* Spider.swift */,
 				BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */,
@@ -146,12 +145,9 @@
 				BBD895011A72AE7C003FF4C0 /* GameScene.sks */,
 				BBD895071A72AE7C003FF4C0 /* Main.storyboard */,
 				BBD8950C1A72AE7C003FF4C0 /* LaunchScreen.xib */,
-				BB73F5141A740639007453BC /* UniformGenerator.h */,
-				BB73F5151A740639007453BC /* UniformGenerator.m */,
-				BB73F5111A740545007453BC /* shader.fsh */,
+				BB29822B1A75067F007F461E /* intro.mp4 */,
 				BBA58B071A72FC6200A4F184 /* SKTUtils */,
 				BBD894FD1A72AE7C003FF4C0 /* Supporting Files */,
-				BB73F5131A740638007453BC /* GlobalGameJam2015-Bridging-Header.h */,
 			);
 			path = GlobalGameJam2015;
 			sourceTree = "<group>";
@@ -261,9 +257,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB73F5121A740545007453BC /* shader.fsh in Resources */,
 				BBD8950E1A72AE7C003FF4C0 /* LaunchScreen.xib in Resources */,
 				BBD8950B1A72AE7C003FF4C0 /* Images.xcassets in Resources */,
+				BB29822E1A750EE8007F461E /* intro.mp4 in Resources */,
 				BBD895021A72AE7C003FF4C0 /* GameScene.sks in Resources */,
 				BBD895091A72AE7C003FF4C0 /* Main.storyboard in Resources */,
 			);
@@ -288,6 +284,7 @@
 				BB0FCB201A742B7400712BDF /* Spider.swift in Sources */,
 				BBA58B151A72FC6200A4F184 /* CGPoint+Extensions.swift in Sources */,
 				BBA58B1E1A72FC6200A4F184 /* SKTTimingFunctions.swift in Sources */,
+				BB29822A1A750623007F461E /* IntroScene.swift in Sources */,
 				BBA58B1D1A72FC6200A4F184 /* SKTEffects.swift in Sources */,
 				BBA58B191A72FC6200A4F184 /* SKAction+SpecialEffects.swift in Sources */,
 				BBA58B161A72FC6200A4F184 /* CGVector+Extensions.swift in Sources */,
@@ -296,7 +293,6 @@
 				BBD895061A72AE7C003FF4C0 /* GameViewController.swift in Sources */,
 				BBA58B171A72FC6200A4F184 /* Int+Extensions.swift in Sources */,
 				BBA58B1B1A72FC6200A4F184 /* SKNode+Extensions.swift in Sources */,
-				BB73F5161A740639007453BC /* UniformGenerator.m in Sources */,
 				BBA58B1C1A72FC6200A4F184 /* SKTAudio.swift in Sources */,
 				BB6298C71A739DAD00C39464 /* Leg.swift in Sources */,
 				BBA58B141A72FC6200A4F184 /* CGFloat+Extensions.swift in Sources */,
