@@ -12,18 +12,6 @@ import AVFoundation
 class IntroScene: SKScene {
     
     override func didMoveToView(view: SKView) {
-        runAction(SKAction.runBlock({ () -> Void in
-            if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-                
-                if let skView = self.view {
-                    scene.scaleMode = .AspectFill
-                    skView.presentScene(scene)
-                }
-                
-                
-            }
-        }))
-        
         let background = SKSpriteNode(color: UIColor.blackColor(), size: self.size)
         background.position = CGPointMake(self.size.width / 2 , self.size.height / 2 )
         
