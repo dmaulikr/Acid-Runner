@@ -101,7 +101,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
-        var contactBodies = sortContactBodiesByCategoryBitMask(contact.bodyA, b: contact.bodyB)
+        let contactBodies = sortContactBodiesByCategoryBitMask(contact.bodyA, b: contact.bodyB)
         
         if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Spider != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.DroppedItem != 0) {
             droppedItemDidCollideWithSpider(contactBodies.firstBody.node as SKSpriteNode, item: contactBodies.secondBody.node as SKSpriteNode)
@@ -151,27 +151,26 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     func startUpMyGravityPlayground(view: SKView) {
         self.physicsWorld.gravity = CGVectorMake(0.0, -1.0)
         
-        var waitAction = SKAction.waitForDuration(5.0)
-        var dropItemAction = SKAction.runBlock {
+        let waitAction = SKAction.waitForDuration(5.0)
+        let dropItemAction = SKAction.runBlock {
             self.createBalls(view)
         }
         
-        var sequence = SKAction.sequence([waitAction, dropItemAction])
+        let sequence = SKAction.sequence([waitAction, dropItemAction])
         
         runAction(SKAction.repeatActionForever(sequence))
     }
     
     func startUpHearthburn() {
-        var waitAction = SKAction.waitForDuration(1.0)
-        var moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 50.0), duration: 1.0)
-        var sequence = SKAction.sequence([waitAction, moveAction])
+        let waitAction = SKAction.waitForDuration(1.0)
+        let moveAction = SKAction.moveBy(CGVector(dx: 0.0, dy: 50.0), duration: 1.0)
+        let sequence = SKAction.sequence([waitAction, moveAction])
         
         acid?.runAction(SKAction.repeatActionForever(sequence))
         acidAction = waitAction
     }
     
     func createAcid(view: SKView) {
-        
         let acidNode = SKSpriteNode(texture: SKTexture(imageNamed: "acid"), color: SKColor.clearColor(), size: CGSize(width: CGRectGetWidth(view.frame), height: CGRectGetHeight(view.frame)))
         acidNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: -(CGRectGetHeight(view.frame)/2.0 - acidInitialHeight - acidTransparentAreaHeight))
         acidNode.zPosition = ZPosition.Acid.rawValue
@@ -193,7 +192,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         for i in 1...surfaceAnimatedAtlas.textureNames.count {
             let textureName = "acid_surface_0\(i)"
-            var texture = surfaceAnimatedAtlas.textureNamed(textureName)
+            let texture = surfaceAnimatedAtlas.textureNamed(textureName)
             surfaceFrames.append(texture)
         }
         
@@ -232,14 +231,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func createLeftWall(wallWidth: CGFloat, wallHeight: CGFloat, wall: SKSpriteNode) {
-        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
+        let wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
         wallNode.position = CGPoint(x: wallWidth/2.0, y: wallHeight/2.0)
         wall.addChild(wallNode)
         leftWall = wallNode
     }
     
     func createRightWall(wallWidth: CGFloat, wallHeight: CGFloat, wall: SKSpriteNode) {
-        var wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
+        let wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
         wallNode.position = CGPoint(x: self.size.width - wallWidth/2.0, y: wallHeight/2.0)
         wall.addChild(wallNode)
         rightWall = wallNode
@@ -253,7 +252,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         let items = ["apple", "earthworm", "sausage"]
         let randomIndex = Int.random(min: 0, max: 2)
         
-        var ball = SKSpriteNode(texture: SKTexture(imageNamed:items[randomIndex]), color: SKColor.clearColor(), size: ballSize)
+        let ball = SKSpriteNode(texture: SKTexture(imageNamed:items[randomIndex]), color: SKColor.clearColor(), size: ballSize)
         ball.position = CGPoint(x: CGFloat.random(min: wallWidth + offsetFromWalls, max: CGRectGetWidth(view.frame) - wallWidth - offsetFromWalls), y: CGRectGetHeight(view.frame) + ballsDropPointOffset)
         ball.zPosition = ZPosition.Items.rawValue
         addChild(ball)
@@ -268,8 +267,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func createSceneContents(view: SKView) {
-        let wallHeight = view.frame.height
-        
         createEsophagus(view)
         createAcid(view)
         
@@ -298,7 +295,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func createWallNode(wallWidth: CGFloat, wallHeight: CGFloat) -> SKSpriteNode {
-        var node = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        let node = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
         node.zPosition = ZPosition.Walls.rawValue
         node.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
         node.physicsBody?.categoryBitMask = PhysicsCategory.Wall
@@ -308,7 +305,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
 
     func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        var backgroundNode = SKSpriteNode(color: baseColor, size: CGSizeMake(CGRectGetWidth(view.frame)-wallWidth*2, CGRectGetHeight(view.frame)))
+        let backgroundNode = SKSpriteNode(color: baseColor, size: CGSizeMake(CGRectGetWidth(view.frame)-wallWidth*2, CGRectGetHeight(view.frame)))
         backgroundNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
         backgroundNode.lightingBitMask = LightingCategory.MainLightSource
         addChild(backgroundNode)
@@ -316,7 +313,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func letThereBeLight(view: SKView) {
-        var light = SKLightNode()
+        let light = SKLightNode()
         let lightNodeOffset = CGFloat(50.0)
         light.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame) + lightNodeOffset)
         light.categoryBitMask = LightingCategory.MainLightSource
