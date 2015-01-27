@@ -232,16 +232,26 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func createLeftWall(wallWidth: CGFloat, wallHeight: CGFloat, wall: SKSpriteNode) {
         let wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
-        wallNode.position = CGPoint(x: wallWidth/2.0, y: wallHeight/2.0)
+        wallNode.position = CGPoint(x: -wall.position.x + wallWidth/2.0, y: 0.0)
         wall.addChild(wallNode)
         leftWall = wallNode
     }
     
     func createRightWall(wallWidth: CGFloat, wallHeight: CGFloat, wall: SKSpriteNode) {
         let wallNode = createWallNode(wallWidth, wallHeight: wallHeight)
-        wallNode.position = CGPoint(x: self.size.width - wallWidth/2.0, y: wallHeight/2.0)
+        wallNode.position = CGPoint(x: wall.position.x - wallWidth/2.0, y: 0.0)
         wall.addChild(wallNode)
         rightWall = wallNode
+    }
+    
+    func createWallNode(wallWidth: CGFloat, wallHeight: CGFloat) -> SKSpriteNode {
+        let node = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
+        node.zPosition = ZPosition.Walls.rawValue
+        node.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
+        node.physicsBody?.categoryBitMask = PhysicsCategory.Wall
+        node.lightingBitMask = LightingCategory.MainLightSource
+        
+        return node
     }
     
     func createBalls(view: SKView) {
@@ -292,16 +302,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     func updateHeightLabel(value: Int) {
         heightLabel?.text = "\(value)"
         acidAction?.duration = 1.0
-    }
-    
-    func createWallNode(wallWidth: CGFloat, wallHeight: CGFloat) -> SKSpriteNode {
-        let node = SKSpriteNode(color: SKColor.clearColor(), size: CGSize(width: wallWidth, height: wallHeight))
-        node.zPosition = ZPosition.Walls.rawValue
-        node.physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: -wallWidth/2.0, y: -wallHeight/2.0, width: wallWidth, height: wallHeight))
-        node.physicsBody?.categoryBitMask = PhysicsCategory.Wall
-        node.lightingBitMask = LightingCategory.MainLightSource
-        
-        return node
     }
 
     func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
