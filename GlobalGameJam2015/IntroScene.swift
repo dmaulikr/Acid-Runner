@@ -66,7 +66,6 @@ class IntroScene: SKScene {
             acid.fontName = "Futura"
             acid.fontSize = 90
             acid.fontColor = UIColor.greenColor()
-            acid
             acid.position = CGPointMake(self.size.width / 2, self.size.height / 2 + 30)
             acid.alpha = 0
             

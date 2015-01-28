@@ -45,7 +45,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var leftWall: SKSpriteNode?
     var rightWall: SKSpriteNode?
     var walls: [SKSpriteNode] = []
-    var background: SKSpriteNode?
     
     var acid: SKSpriteNode?
     
@@ -302,14 +301,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     func updateHeightLabel(value: Int) {
         heightLabel?.text = "\(value)"
         acidAction?.duration = 1.0
-    }
-
-    func createBackground(view: SKView, wallWidth: CGFloat, wallHeight: CGFloat) {
-        let backgroundNode = SKSpriteNode(color: baseColor, size: CGSizeMake(CGRectGetWidth(view.frame)-wallWidth*2, CGRectGetHeight(view.frame)))
-        backgroundNode.position = CGPoint(x: CGRectGetWidth(view.frame)/2.0, y: CGRectGetHeight(view.frame)/2.0)
-        backgroundNode.lightingBitMask = LightingCategory.MainLightSource
-        addChild(backgroundNode)
-        background = backgroundNode
     }
     
     func letThereBeLight(view: SKView) {
