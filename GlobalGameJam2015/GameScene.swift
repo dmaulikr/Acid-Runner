@@ -14,8 +14,9 @@ struct PhysicsCategory {
     static let Spider       : UInt32 = 0b1
     static let Acid         : UInt32 = 0b10
     static let Wall         : UInt32 = 0b100
-    static let DroppedItem  : UInt32 = 0b1000
-    static let UsedItem     : UInt32 = 0b10000
+    static let Floor        : UInt32 = 0b1000
+    static let DroppedItem  : UInt32 = 0b10000
+    static let UsedItem     : UInt32 = 0b100000
 }
 
 struct LightingCategory {
@@ -69,6 +70,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     var acidAction: SKAction?
     
+    let itemSize = CGSize(width: 30.0, height: 30.0)
+    
     override func didMoveToView(view: SKView) {
         createSceneContents(view)
         
@@ -105,12 +108,15 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Spider != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.DroppedItem != 0) {
             droppedItemDidCollideWithSpider(contactBodies.firstBody.node as SKSpriteNode, item: contactBodies.secondBody.node as SKSpriteNode)
         }
+        else if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Acid != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.UsedItem != 0) {
+            droppedItemDidReachAcid(contactBodies.firstBody.node as SKSpriteNode, item: contactBodies.secondBody.node as SKSpriteNode)
+        }
+        else if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Floor != 0) && ((contactBodies.secondBody.categoryBitMask & PhysicsCategory.DroppedItem != 0) || (contactBodies.secondBody.categoryBitMask & PhysicsCategory.UsedItem != 0)) {
+            droppedItemDidReachFloor(contactBodies.firstBody.node, item: contactBodies.secondBody.node as SKSpriteNode)
+        }
         else if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Spider != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.Acid != 0) {
             gameOver()
-        } else if (contactBodies.firstBody.categoryBitMask & PhysicsCategory.Acid != 0) && (contactBodies.secondBody.categoryBitMask & PhysicsCategory.UsedItem != 0) {
-            runAction(SKAction.playSoundFileNamed("plum.wav", waitForCompletion: false))
         }
-        
     }
     
     func sortContactBodiesByCategoryBitMask(a: SKPhysicsBody, b: SKPhysicsBody) -> (firstBody: SKPhysicsBody, secondBody: SKPhysicsBody) {
@@ -127,6 +133,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
             spidey.move(-60.0)
         }
+    }
+    
+    func droppedItemDidReachFloor (floor: SKNode?, item: SKSpriteNode) {
+        item.removeFromParent()
+    }
+    
+    func droppedItemDidReachAcid (acid: SKSpriteNode, item: SKSpriteNode) {
+        runAction(SKAction.playSoundFileNamed("plum.wav", waitForCompletion: false))
     }
     
     func gameOver() {
@@ -214,6 +228,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         addChild(background)
         
         addWallAtPositon(center)
+        createFloor()
     }
     
     func addWallAtPositon(pos: CGPoint) {
@@ -253,10 +268,23 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         return node
     }
     
+    func createFloor() {
+        let floor = SKNode()
+        let floorHeight = CGFloat(1.0)
+        
+        floor.position = CGPoint(x: self.size.width/2.0, y: -(itemSize.height + floorHeight/2.0))
+        floor.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: self.size.width, height: floorHeight))
+        floor.physicsBody?.dynamic = false
+        floor.physicsBody?.categoryBitMask = PhysicsCategory.Floor
+        floor.physicsBody?.collisionBitMask = PhysicsCategory.None
+        floor.physicsBody?.contactTestBitMask = PhysicsCategory.DroppedItem | PhysicsCategory.UsedItem
+        addChild(floor)
+    }
+    
     func createBalls(view: SKView) {
         let offsetFromWalls = CGFloat(10)
         let ballsDropPointOffset = CGFloat(100)
-        let ballSize = CGSize(width: 30.0, height: 30.0)
+        let ballSize = itemSize
         
         let items = ["apple", "earthworm", "sausage"]
         let randomIndex = Int.random(min: 0, max: 2)
