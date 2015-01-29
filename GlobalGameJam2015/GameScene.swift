@@ -166,7 +166,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         let waitAction = SKAction.waitForDuration(5.0)
         let dropItemAction = SKAction.runBlock {
-            self.createBalls(view)
+            self.createItem(view)
         }
         
         let sequence = SKAction.sequence([waitAction, dropItemAction])
@@ -279,28 +279,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         floor.physicsBody?.collisionBitMask = PhysicsCategory.None
         floor.physicsBody?.contactTestBitMask = PhysicsCategory.DroppedItem | PhysicsCategory.UsedItem
         addChild(floor)
-    }
-    
-    func createBalls(view: SKView) {
-        let offsetFromWalls = CGFloat(10)
-        let ballsDropPointOffset = CGFloat(100)
-        let ballSize = itemSize
-        
-        let items = ["apple", "earthworm", "sausage"]
-        let randomIndex = Int.random(min: 0, max: 2)
-        
-        let ball = SKSpriteNode(texture: SKTexture(imageNamed:items[randomIndex]), color: SKColor.clearColor(), size: ballSize)
-        ball.position = CGPoint(x: CGFloat.random(min: wallWidth + offsetFromWalls, max: CGRectGetWidth(view.frame) - wallWidth - offsetFromWalls), y: CGRectGetHeight(view.frame) + ballsDropPointOffset)
-        ball.zPosition = ZPosition.Items.rawValue
-        addChild(ball)
-        
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: ballSize.width/2.0)
-        ball.physicsBody?.allowsRotation = true
-        ball.physicsBody?.categoryBitMask = PhysicsCategory.DroppedItem | PhysicsCategory.UsedItem
-        ball.physicsBody?.restitution = 0.8
-        ball.physicsBody?.collisionBitMask = PhysicsCategory.Spider | PhysicsCategory.Wall
-        ball.physicsBody?.contactTestBitMask = PhysicsCategory.Spider | PhysicsCategory.Acid
-        ball.lightingBitMask = LightingCategory.MainLightSource
     }
     
     func createItem(view: SKView) {
