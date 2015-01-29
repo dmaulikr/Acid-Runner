@@ -38,6 +38,7 @@
 		BBD8950B1A72AE7C003FF4C0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBD8950A1A72AE7C003FF4C0 /* Images.xcassets */; };
 		BBD8950E1A72AE7C003FF4C0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBD8950C1A72AE7C003FF4C0 /* LaunchScreen.xib */; };
 		BBD8951A1A72AE7C003FF4C0 /* GlobalGameJam2015Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD895191A72AE7C003FF4C0 /* GlobalGameJam2015Tests.swift */; };
+		D49BAA2B1A79C1C900E52688 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49BAA2A1A79C1C900E52688 /* Item.swift */; };
 		D4FB23FE1A74EF4C002CCFE0 /* AcidSurface.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D4FB23FD1A74EF4C002CCFE0 /* AcidSurface.atlas */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		BBD895131A72AE7C003FF4C0 /* GlobalGameJam2015Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlobalGameJam2015Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBD895181A72AE7C003FF4C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBD895191A72AE7C003FF4C0 /* GlobalGameJam2015Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalGameJam2015Tests.swift; sourceTree = "<group>"; };
+		D49BAA2A1A79C1C900E52688 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		D4FB23FD1A74EF4C002CCFE0 /* AcidSurface.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AcidSurface.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -152,6 +154,7 @@
 				BBD895051A72AE7C003FF4C0 /* GameViewController.swift */,
 				BBD895031A72AE7C003FF4C0 /* GameScene.swift */,
 				BB2982291A750623007F461E /* IntroScene.swift */,
+				D49BAA2A1A79C1C900E52688 /* Item.swift */,
 				BB6298C61A739DAD00C39464 /* Leg.swift */,
 				BB0FCB1F1A742B7400712BDF /* Spider.swift */,
 				BB6298C81A73B17300C39464 /* SpriteKit+Spring.swift */,
@@ -307,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D49BAA2B1A79C1C900E52688 /* Item.swift in Sources */,
 				BB6298C91A73B17300C39464 /* SpriteKit+Spring.swift in Sources */,
 				BBD895041A72AE7C003FF4C0 /* GameScene.swift in Sources */,
 				BB0FCB201A742B7400712BDF /* Spider.swift in Sources */,

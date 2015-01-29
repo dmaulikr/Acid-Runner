@@ -303,6 +303,15 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         ball.lightingBitMask = LightingCategory.MainLightSource
     }
     
+    func createItem(view: SKView) {
+        let offsetFromWalls = CGFloat(10)
+        let itemDropPointOffset = CGFloat(100)
+        
+        let item = Item(size: itemSize)
+        item.sprite.position = CGPoint(x: CGFloat.random(min: wallWidth + offsetFromWalls, max: CGRectGetWidth(view.frame) - wallWidth - offsetFromWalls), y: CGRectGetHeight(view.frame) + itemDropPointOffset)
+        addChild(item.sprite)
+    }
+    
     func createSceneContents(view: SKView) {
         createEsophagus(view)
         createAcid(view)
